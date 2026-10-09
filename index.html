@@ -225,6 +225,7 @@
             border-radius: 8px;
             cursor: grab;
             border: 1px solid #E2E8F0;
+            user-select: none;
         }
 
         .student-item.absent {
@@ -499,13 +500,20 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* PDF Frame */
-        .pdf-viewer {
-            width: 100%;
-            height: 460px;
-            border: 2px solid #CBD5E1;
-            border-radius: 15px;
+        /* Lesson Pages Container */
+        .lesson-pages-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
             margin-top: 15px;
+        }
+
+        .lesson-page-img {
+            width: 100%;
+            border-radius: 15px;
+            border: 2px solid #E2E8F0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
         }
 
         .pin-input-box {
@@ -519,7 +527,6 @@
             margin: 15px 0;
             outline: none;
         }
-
     </style>
 </head>
 <body>
@@ -586,7 +593,7 @@
             <div class="sidebar-card">
                 <div class="sidebar-title">
                     <i class="fa-solid fa-clipboard-user"></i>
-                    <span>التحضير واختيار الأسماء الحاضرة</span>
+                    <span>التحضير وااختيار الأسماء الحاضرة</span>
                 </div>
                 
                 <div class="attendance-list" id="attendanceList"></div>
@@ -704,7 +711,7 @@
                 </div>
             </div>
 
-            <!-- STAGE 3: VOCABULARY & PDF & ENLARGED CARDS -->
+            <!-- STAGE 3: VOCABULARY & LESSON PAGES -->
             <div class="stage-card" id="stage-2">
                 <div class="stage-header">
                     <h3><i class="fa-solid fa-book-open" style="color:var(--blue-main)"></i> المرحلة الثالثة: كتاب الدرس ومفردات الآلات (10 دقائق للمعلمة)</h3>
@@ -726,11 +733,19 @@
                     <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Traditional Music', '🎺', 'Join the traditional music festival!')">🎺 Traditional</button>
                 </div>
 
-                <!-- PDF Embedded Viewer -->
-                <iframe src="lesson.pdf" class="pdf-viewer"></iframe>
+                <div class="lesson-pages-container">
+                    <div>
+                        <h4 style="margin-bottom:6px; text-align:center;">📖 الصفحة الأولى (34)</h4>
+                        <img src="page1.png" alt="الصفحة الأولى" class="lesson-page-img" onclick="openModal('📖 صفحة 34', '<img src=\'page1.png\' style=\'width:100%; border-radius:10px;\'>')">
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom:6px; text-align:center;">📖 الصفحة الثانية (35)</h4>
+                        <img src="page2.png" alt="الصفحة الثانية" class="lesson-page-img" onclick="openModal('📖 صفحة 35', '<img src=\'page2.png\' style=\'width:100%; border-radius:10px;\'>')">
+                    </div>
+                </div>
             </div>
 
-            <!-- STAGE 4: WORKING PUZZLE GAME WITH AUTO-RESET -->
+            <!-- STAGE 4: PUZZLE STRATEGY -->
             <div class="stage-card" id="stage-3">
                 <div class="stage-header">
                     <h3><i class="fa-solid fa-puzzle-piece" style="color:var(--green-success)"></i> المرحلة الرابعة: استراتيجية Puzzle (تركيب المفردات)</h3>
@@ -754,7 +769,7 @@
                 </div>
             </div>
 
-            <!-- STAGE 5: WHO WHAT ACTION WITH PIN -->
+            <!-- STAGE 5: WHO WHAT ACTION -->
             <div class="stage-card" id="stage-4">
                 <div class="stage-header">
                     <h3><i class="fa-solid fa-sitemap" style="color:var(--purple-main)"></i> المرحلة الخامسة: استراتيجية Who / What / Action (بالرمز السري)</h3>
@@ -858,7 +873,7 @@
         </main>
     </div>
 
-    <!-- General Modal Card Popup -->
+    <!-- Modals Popups -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closeModal()">X</button>
@@ -869,7 +884,6 @@
         </div>
     </div>
 
-    <!-- Modal PIN Entry Card -->
     <div class="modal-overlay" id="pinModalOverlay">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closePinModal()">X</button>
@@ -881,7 +895,6 @@
         </div>
     </div>
 
-    <!-- Modal PIN Error Card -->
     <div class="modal-overlay" id="pinErrorModalOverlay">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closePinErrorModal()">X</button>
@@ -892,12 +905,11 @@
         </div>
     </div>
 
-    <!-- Firebase SDK v9 Module Integration -->
+    <!-- Firebase SDK & Global Logic Intersect -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-        // إعدادات Firebase الخاصه بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyBgWsmcEoNoiemwL-Vl8M2v-Fyz2AedAqA",
             authDomain: "top-goal-lesson-55a48.firebaseapp.com",
@@ -908,29 +920,6 @@
             appId: "1:388539643792:web:889e2adf6cc9a2619ae515"
         };
 
-        // تهيئة Firebase و Realtime Database
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const stateRef = ref(db, 'liveLessonState');
-
-        // دالة رفع التحديثات فوراً إلى Firebase
-        window.syncDataToFirebase = function() {
-            set(stateRef, window.state).catch(err => console.log("خطأ في مزامنة Firebase:", err));
-        };
-
-        // الاستماع الفوري والتحديث اللحظي لجميع الأجهزة المتصلة
-        onValue(stateRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                window.state = data;
-                window.renderUIFromState();
-            }
-        });
-    </script>
-
-    <!-- JavaScript Main Engine -->
-    <script>
-        // 16 Students Alphabetically
         const rawStudents = [
             "تالا بنت إبراهيم المرحبي", "تالا عبدالله الشهراني", "جوانا بنت عبدالله الشهراني",
             "جواهر بنت محمد الأكلبي", "حور ناصر الشهراني", "دانه بنت محمد العلياني",
@@ -945,6 +934,23 @@
             attendance: rawStudents.map(fullName => ({ fullName, present: true, group: null }))
         };
 
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const stateRef = ref(db, 'liveLessonState');
+
+        window.syncDataToFirebase = function() {
+            set(stateRef, window.state).catch(err => console.log("خطأ في المزامنة:", err));
+        };
+
+        onValue(stateRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                window.state = data;
+                window.renderUIFromState();
+            }
+        });
+
+        // Binding Core Functions to Window Context explicitly
         window.renderUIFromState = function() {
             document.querySelectorAll(".stage-btn").forEach((btn, i) => btn.classList.toggle("active", i === window.state.currentStage));
             document.querySelectorAll(".stage-card").forEach((card, i) => card.classList.toggle("active", i === window.state.currentStage));
@@ -969,7 +975,7 @@
                 item.ondragstart = (e) => e.dataTransfer.setData("text/plain", idx);
                 item.innerHTML = `
                     <span>${st.fullName}</span>
-                    <button style="border:none; background:none; cursor:pointer;" onclick="toggleAttendance(${idx})">
+                    <button style="border:none; background:none; cursor:pointer;" onclick="window.toggleAttendance(${idx})">
                         ${st.present ? '✅' : '❌'}
                     </button>
                 `;
@@ -987,9 +993,11 @@
         window.dropStudent = function(ev, groupName) {
             ev.preventDefault();
             const idx = ev.dataTransfer.getData("text/plain");
-            window.state.attendance[idx].group = groupName;
-            if (window.syncDataToFirebase) window.syncDataToFirebase();
-            playAudioEffect('happy');
+            if (idx !== undefined && window.state.attendance[idx]) {
+                window.state.attendance[idx].group = groupName;
+                if (window.syncDataToFirebase) window.syncDataToFirebase();
+                playAudioEffect('happy');
+            }
         };
 
         function renderGroupsList() {
@@ -1013,29 +1021,31 @@
             playAudioEffect('happy');
         };
 
-        // Audio Effects Engine
+        // Audio Effects
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playAudioEffect(type) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
 
-            if (type === 'happy') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
-            } else if (type === 'sad') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.35);
-            }
+                if (type === 'happy') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'sad') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+                }
+            } catch(e) {}
         }
 
-        // Timer Controls
+        // Timers
         let masterTime = 2400, masterInterval = null;
         window.toggleMasterTimer = function() {
             const icon = document.getElementById("masterPlayIcon");
@@ -1079,7 +1089,7 @@
             document.getElementById(`pIcon${idx}`).className = "fa-solid fa-play";
         };
 
-        // Modals & Helpers
+        // Modals Logic
         window.openModal = function(title, body) {
             document.getElementById("modalTitle").innerHTML = title;
             document.getElementById("modalBody").innerHTML = body;
@@ -1097,7 +1107,7 @@
             openModal("💖 تفعيل القيمة السلوكية", `تم منح نقطة لـ Group ${["A","B","C"][grpIdx]} لتطبيق القيمة والمهارة بنجاح! 👏✨`);
         };
 
-        // Puzzle Game Engine
+        // Puzzle Logic
         let selectedPuzzleTile = null;
         window.selectPuzzleTile = function(el, id, matchKey) {
             document.querySelectorAll(".puzzle-tile.wrong-match").forEach(t => t.className = "puzzle-tile");
@@ -1209,7 +1219,7 @@
             playAudioEffect('happy');
         };
 
-        // Initial Local Render
+        // Initialize App Rendering
         window.renderUIFromState();
     </script>
 </body>
