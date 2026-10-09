@@ -1,9 +1,903 @@
-<!-- Firebase SDK v9 -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الدرس التفاعلي - أ. منال المعاوي | Top Goal 3</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --pink-main: #FF6B9B;
+            --pink-light: #FFF0F5;
+            --purple-main: #8B5CF6;
+            --purple-light: #F3E8FF;
+            --blue-main: #3B82F6;
+            --yellow-accent: #FFD166;
+            --green-success: #10B981;
+            --red-danger: #EF4444;
+            --dark-text: #2D3748;
+            --card-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: all 0.2s ease;
+        }
+
+        body {
+            background-color: #F8FAFC;
+            color: var(--dark-text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: auto;
+        }
+
+        /* Header Navigation */
+        header {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+            color: white;
+            padding: 12px 20px;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .school-info {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .badge-pill {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+        }
+
+        .sync-badge {
+            background: #10B981;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .master-timer-box {
+            background: #FEF3C7;
+            color: #D97706;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-family: 'Fredoka', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-btn {
+            background: #D97706;
+            color: white;
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Responsive Layout Grid */
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(280px, 320px) 1fr;
+            gap: 20px;
+            padding: 15px;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            .right-sidebar {
+                position: relative !important;
+                top: 0 !important;
+                height: auto !important;
+            }
+        }
+
+        /* Sidebar Styling */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 75px;
+            height: calc(100vh - 95px);
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #E2E8F0;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--purple-main);
+            border-bottom: 2px dashed #F1F5F9;
+            padding-bottom: 6px;
+        }
+
+        /* Score Rows */
+        .score-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--pink-light);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+        }
+
+        .score-val {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--pink-main);
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .score-btn {
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .btn-plus { background: var(--green-success); }
+        .btn-minus { background: var(--red-danger); }
+
+        /* Attendance Checklist */
+        .attendance-list {
+            max-height: 180px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .student-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            padding: 6px 10px;
+            background: #F8FAFC;
+            border-radius: 8px;
+            cursor: grab;
+            border: 1px solid #E2E8F0;
+        }
+
+        .student-item.absent {
+            background: #FEE2E2;
+            color: #991B1B;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        /* Digital Random Picker Container */
+        .picker-box {
+            background: linear-gradient(135deg, var(--purple-light), var(--pink-light));
+            border: 2px dashed var(--purple-main);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .picker-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--purple-main);
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .spin-btn-action {
+            background: linear-gradient(135deg, var(--purple-main), var(--pink-main));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
+            width: 100%;
+        }
+
+        /* Stages Navigation Bar */
+        .stages-bar {
+            display: flex;
+            background: white;
+            padding: 8px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
+            gap: 6px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .stage-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 8px 6px;
+            border: none;
+            background: #F1F5F9;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #64748B;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .stage-btn.active {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Stage Cards Container */
+        .stage-card {
+            display: none;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #E2E8F0;
+            overflow-x: auto;
+        }
+
+        .stage-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            border-bottom: 2px solid #F1F5F9;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stage-timer-box {
+            background: #EFF6FF;
+            color: var(--blue-main);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Drag & Drop Group Box */
+        .groups-dnd-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .group-dnd-box {
+            background: #F8FAFC;
+            border: 2px dashed #CBD5E1;
+            border-radius: 15px;
+            padding: 12px;
+            min-height: 120px;
+        }
+
+        .group-dnd-box.a { border-color: var(--blue-main); background: #EFF6FF; }
+        .group-dnd-box.b { border-color: var(--yellow-accent); background: #FEFCE8; }
+        .group-dnd-box.c { border-color: var(--green-success); background: #ECFDF5; }
+
+        /* Puzzle Game Components */
+        .puzzle-grid-game {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .puzzle-tile {
+            background: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .puzzle-tile.selected {
+            border-color: var(--purple-main);
+            background: var(--purple-light);
+        }
+
+        .puzzle-tile.correct-match {
+            background: #D1FAE5;
+            border-color: var(--green-success);
+            color: #065F46;
+            pointer-events: none;
+        }
+
+        .puzzle-tile.wrong-match {
+            background: #FEE2E2;
+            border-color: var(--red-danger);
+            color: #991B1B;
+        }
+
+        /* Banner Display */
+        .sentence-banner {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            color: white;
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-family: 'Fredoka', sans-serif;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+            margin: 15px 0;
+        }
+
+        /* Reveal Cards with Pin Protection */
+        .reveal-card {
+            background: var(--purple-light);
+            border: 2px dashed var(--purple-main);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--purple-main);
+            font-size: 1rem;
+        }
+
+        .reveal-card.revealed {
+            background: #D1FAE5;
+            border-color: var(--green-success);
+            color: #065F46;
+        }
+
+        /* MCQ Options */
+        .mcq-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border: 2px solid #E2E8F0;
+            background: white;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+
+        .mcq-btn.correct { background: #D1FAE5; border-color: var(--green-success); color: #065F46; }
+        .mcq-btn.wrong { background: #FEE2E2; border-color: var(--red-danger); color: #991B1B; }
+
+        /* Modal Popup Card */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 440px;
+            width: 90%;
+            position: relative;
+            animation: popupBounce 0.35s ease;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #F1F5F9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @keyframes popupBounce {
+            from { transform: scale(0.6); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* PDF Frame */
+        .pdf-viewer {
+            width: 100%;
+            height: 460px;
+            border: 2px solid #CBD5E1;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        .pin-input-box {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--purple-main);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            margin: 15px 0;
+            outline: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation Bar -->
+    <header>
+        <div class="header-container">
+            <div class="school-info">
+                <span class="badge-pill"><i class="fa-solid fa-school"></i> مدرسة الهيشة الابتدائية</span>
+                <span class="badge-pill"><i class="fa-solid fa-chalkboard-user"></i> المعلمة: أ. منال المعاوي</span>
+                <span class="badge-pill"><i class="fa-solid fa-user-tie"></i> المديرة: أ. غلا آل جدران</span>
+                <span class="badge-pill" style="background:#F59E0B; color:white;"><i class="fa-solid fa-book"></i> المادة: Top Goal 3</span>
+                <span class="badge-pill" style="background:#10B981; color:white;"><i class="fa-solid fa-music"></i> الدرس: Unit 3 - Interests</span>
+                <span class="sync-badge" id="syncStatus"><i class="fa-solid fa-wifi"></i> متصل بالمزامنة</span>
+            </div>
+            <div class="master-timer-box">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span id="masterTimer">40:00</span>
+                <button class="timer-btn" onclick="toggleMasterTimer()"><i class="fa-solid fa-play" id="masterPlayIcon"></i></button>
+                <button class="timer-btn" onclick="resetMasterTimer()"><i class="fa-solid fa-rotate-left"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Workspace -->
+    <div class="workspace">
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="right-sidebar">
+            
+            <!-- Group Scores -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">
+                    <i class="fa-solid fa-trophy" style="color:var(--yellow-accent)"></i>
+                    <span>لوحة النقاط والتعزيز</span>
+                </div>
+                <div class="score-row">
+                    <span>⭐ Group A (Stars)</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <button class="score-btn btn-minus" onclick="updateScore(0, -1)">-</button>
+                        <span class="score-val" id="score0">0</span>
+                        <button class="score-btn btn-plus" onclick="updateScore(0, 1)">+</button>
+                    </div>
+                </div>
+                <div class="score-row">
+                    <span>🌸 Group B (Roses)</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <button class="score-btn btn-minus" onclick="updateScore(1, -1)">-</button>
+                        <span class="score-val" id="score1">0</span>
+                        <button class="score-btn btn-plus" onclick="updateScore(1, 1)">+</button>
+                    </div>
+                </div>
+                <div class="score-row">
+                    <span>🦋 Group C (Butterflies)</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <button class="score-btn btn-minus" onclick="updateScore(2, -1)">-</button>
+                        <span class="score-val" id="score2">0</span>
+                        <button class="score-btn btn-plus" onclick="updateScore(2, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Checklist & Digital Random Picker -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">
+                    <i class="fa-solid fa-clipboard-user"></i>
+                    <span>التحضير واختيار الأسماء الحاضرة</span>
+                </div>
+                
+                <div class="attendance-list" id="attendanceList"></div>
+
+                <div class="picker-box">
+                    <div class="picker-display" id="pickerDisplay">🎲 جاهز للاختيار</div>
+                    <button class="spin-btn-action" onclick="pickRandomStudent()">
+                        ✨ اختيار طالبة عشوائياً
+                    </button>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- MAIN LESSON CONTENT -->
+        <main class="main-content">
+
+            <!-- Stages Navigation -->
+            <div class="stages-bar">
+                <button class="stage-btn active" onclick="switchStage(0)">
+                    <span>المرحلة 1</span>
+                    <span>التمهيد والتقسيم</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(1)">
+                    <span>المرحلة 2</span>
+                    <span>الأهداف والقيم</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(2)">
+                    <span>المرحلة 3</span>
+                    <span>المفردات والشرح</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(3)">
+                    <span>المرحلة 4</span>
+                    <span>استراتيجية Puzzle</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(4)">
+                    <span>المرحلة 5</span>
+                    <span>Who/What/Action</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(5)">
+                    <span>المرحلة 6</span>
+                    <span>التعليم المتمايز</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(6)">
+                    <span>المرحلة 7</span>
+                    <span>التقويم والتكريم</span>
+                </button>
+            </div>
+
+            <!-- STAGE 1: GROUPING & WARM-UP -->
+            <div class="stage-card active" id="stage-0">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-users" style="color:var(--pink-main)"></i> المرحلة الأولى: تقسيم المجموعات بالاسم الكامل (4 دقائق)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer0">04:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(0)"><i class="fa-solid fa-play" id="pIcon0"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(0)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <p>اسحبي اسم الطالبة (بالاسم الكامل) من قائمة التحضير باليمين وأسقطيها داخل مجموعتها المناسبة:</p>
+
+                <div class="groups-dnd-container">
+                    <div class="group-dnd-box a" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Group A')">
+                        <h4 style="color:var(--blue-main);">⭐ Group A (Stars)</h4>
+                        <div class="group-members-list" id="groupA-list"></div>
+                    </div>
+                    <div class="group-dnd-box b" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Group B')">
+                        <h4 style="color:#D97706;">🌸 Group B (Roses)</h4>
+                        <div class="group-members-list" id="groupB-list"></div>
+                    </div>
+                    <div class="group-dnd-box c" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Group C')">
+                        <h4 style="color:var(--green-success);">🦋 Group C (Butterflies)</h4>
+                        <div class="group-members-list" id="groupC-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 2: OBJECTIVES & VALUES -->
+            <div class="stage-card" id="stage-1">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-bullseye" style="color:var(--purple-main)"></i> المرحلة الثانية: الأهداف والقيم الأساسية (5 دقائق)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer1">05:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(1)"><i class="fa-solid fa-play" id="pIcon1"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(1)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="background:#EEF2FF; padding:15px; border-radius:12px;">
+                        <h3 style="color:var(--primary); margin-bottom:8px;">🎯 أهداف الدرس (Lesson Objectives):</h3>
+                        <ul style="line-height:2; margin-right:20px;">
+                            <li>أن تتعرف الطالبة على مفردات الاهتمامات والآلات الموسيقية (drums, violin, oud, concert).</li>
+                            <li>أن تقرأ الطالبة الجمل وتستخرج الأفكار الرئيسية بشكل صحيح.</li>
+                            <li>أن تطبق الطالبة استراتيجيات التعلم التفاعلي والعد مع مجموعتها.</li>
+                        </ul>
+                    </div>
+
+                    <div style="background:#FEF3C7; padding:15px; border-radius:12px;">
+                        <h3 style="color:#D97706; margin-bottom:8px;">💖 غرس القيم والمهارات الأساسية:</h3>
+                        <p><b>💖 قيمة اليوم:</b> التعاون والتعاطف بين المجموعات.</p>
+                        <p><b>🔢 المهارات العددية:</b> حساب أرقام الأسئلة وعد نقاط تميز المجموعة.</p>
+                        <p><b>📖 مهارة القراءة والكتابة:</b> استخدام السبورة والأيباد في تدوين الإجابات.</p>
+                    </div>
+
+                    <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
+                        <p><b>⚡ مهمة تفعيل القيمة:</b> ما هي أول مجموعة تعرض مشاركتها بشكل تعاوني وتطبيقي؟</p>
+                        <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
+                            <button style="background:var(--blue-main); color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(0)">منح نقطة لـ Group A ⭐</button>
+                            <button style="background:#D97706; color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(1)">منح نقطة لـ Group B 🌸</button>
+                            <button style="background:var(--green-success); color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(2)">منح نقطة لـ Group C 🦋</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 3: VOCABULARY & PDF & ENLARGED CARDS -->
+            <div class="stage-card" id="stage-2">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-book-open" style="color:var(--blue-main)"></i> المرحلة الثالثة: كتاب الدرس ومفردات الآلات (10 دقائق للمعلمة)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer2">10:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(2)"><i class="fa-solid fa-play" id="pIcon2"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(2)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <p>انقري على اسم الآلة للفتح والاستعراض المكبر مع الطالبة:</p>
+
+                <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:15px; background:#F8FAFC; padding:15px; border-radius:12px;">
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Drums (طبول)', '🥁', 'Faris can play these drums.')">🥁 Drums</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Violin (كمان)', '🎻', 'Ibrahim wants to play the violin.')">🎻 Violin</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Oud (عود)', '🪕', 'Learn to play the traditional Oud!')">🪕 Oud</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Concert (حفلة)', '🎶', 'Play in a concert and invite your family!')">🎶 Concert</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Classical Music', '🎼', 'We play classical music.')">🎼 Classical</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Traditional Music', '🎺', 'Join the traditional music festival!')">🎺 Traditional</button>
+                </div>
+
+                <!-- PDF Embedded Viewer -->
+                <iframe src="lesson.pdf" class="pdf-viewer"></iframe>
+            </div>
+
+            <!-- STAGE 4: WORKING PUZZLE GAME WITH AUTO-RESET -->
+            <div class="stage-card" id="stage-3">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-puzzle-piece" style="color:var(--green-success)"></i> المرحلة الرابعة: استراتيجية Puzzle (تركيب المفردات)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer3">08:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(3)"><i class="fa-solid fa-play" id="pIcon3"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(3)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <p style="margin-bottom:12px;">انقري على صورة الآلة ثم على اسمها المطابق حصراً للربط الصحيح:</p>
+
+                <div class="puzzle-grid-game">
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'drums_img', 'drums')">🥁 صورة الطبول</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'drums_text', 'drums')">Drums</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'violin_img', 'violin')">🎻 صورة الكمان</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'violin_text', 'violin')">Violin</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'oud_img', 'oud')">🪕 صورة العود</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'oud_text', 'oud')">Oud</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'piano_text', 'piano')">🎹 Piano</div>
+                </div>
+            </div>
+
+            <!-- STAGE 5: WHO WHAT ACTION WITH PIN -->
+            <div class="stage-card" id="stage-4">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-sitemap" style="color:var(--purple-main)"></i> المرحلة الخامسة: استراتيجية Who / What / Action (بالرمز السري)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer4">06:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(4)"><i class="fa-solid fa-play" id="pIcon4"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(4)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <p>الجملة المنهجية للتحليل:</p>
+                <div class="sentence-banner">
+                    Faris can play the drums
+                </div>
+
+                <p style="margin-bottom:10px;">انقري للكشف عن الإجابة بإدخال الرمز السري الخـاص بالمعلمة:</p>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+                    <div class="reveal-card" onclick="openPinModal('11', 'Faris (Subject)', this)">
+                        🔒 كشف (Who / What)
+                    </div>
+                    <div class="reveal-card" onclick="openPinModal('33', 'can play (Action)', this)">
+                        🔒 كشف (Action)
+                    </div>
+                    <div class="reveal-card" onclick="openPinModal('55', 'the drums (Object)', this)">
+                        🔒 كشف (Who / What)
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 6: DIFFERENTIATION -->
+            <div class="stage-card" id="stage-5">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-layer-group" style="color:var(--pink-main)"></i> المرحلة السادسة: التعليم المتمايز (خيارات متعددة)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer5">04:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(5)"><i class="fa-solid fa-play" id="pIcon5"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(5)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:15px;">
+                    <div style="background:var(--pink-light); padding:15px; border-radius:12px;">
+                        <h4>⭐ Group A (المتقدم):</h4>
+                        <p style="margin:6px 0;">Ibrahim wants to play the ________.</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">oud</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">comedy</button>
+                    </div>
+
+                    <div style="background:var(--purple-light); padding:15px; border-radius:12px;">
+                        <h4>🌸 Group B (المتوسط):</h4>
+                        <p style="margin:6px 0;">Faris can play these: 🥁</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">drums</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">violin</button>
+                    </div>
+
+                    <div style="background:#ECFDF5; padding:15px; border-radius:12px;">
+                        <h4>🦋 Group C (الموجه):</h4>
+                        <p style="margin:6px 0;">حدد المفردة المطابقة للكمان: 🎻</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">Violin</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">Drums</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 7: CLOSURE & RECAP -->
+            <div class="stage-card" id="stage-6">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-flag-checkered" style="color:var(--yellow-accent)"></i> المرحلة السابعة: التقويم واسترجاع الأهداف والتكريم (3 دقائق)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer6">03:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(6)"><i class="fa-solid fa-play" id="pIcon6"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(6)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
+                        <p><b>🎯 استرجاع الهدف 1:</b> ما اسم الآلة التي يعزفها إبراهيم؟</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">Oud / Violin</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">Pizza</button>
+                    </div>
+
+                    <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
+                        <p><b>📖 استرجاع الهدف 2:</b> ما الفعل (Action) في جملة (Faris can play the drums)؟</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">can play</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">drums</button>
+                    </div>
+
+                    <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
+                        <p><b>🔢 استرجاع الهدف 3:</b> تطبيق العد وتحديد مجموع النقاط للمجموعة.</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">تم العد وتحديد النقاط بنجاح ✨</button>
+                    </div>
+
+                    <button style="background:linear-gradient(135deg, #EC4899, #8B5CF6); color:white; border:none; padding:15px; border-radius:50px; font-weight:bold; font-size:1.1rem; cursor:pointer; margin-top:10px;" onclick="showWinningModal()">
+                        🏆 إعلان وتكريم المجموعة الفائزة بالحصة!
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- General Modal Card Popup -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal()">X</button>
+            <i class="fa-solid fa-crown fa-3x" id="modalIcon" style="color:var(--yellow-accent); margin-bottom:10px;"></i>
+            <h2 id="modalTitle" style="color:var(--purple-main);"></h2>
+            <div id="modalBody" style="margin:15px 0; font-size:1.05rem; line-height:1.6;"></div>
+            <button style="background:var(--purple-main); color:white; border:none; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="closeModal()">تم 👍</button>
+        </div>
+    </div>
+
+    <!-- Modal PIN Entry Card -->
+    <div class="modal-overlay" id="pinModalOverlay">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closePinModal()">X</button>
+            <i class="fa-solid fa-lock fa-3x" style="color:var(--purple-main); margin-bottom:10px;"></i>
+            <h2 style="color:var(--purple-main);">أدخل الرقم السري للكشف</h2>
+            <p style="margin-top:5px; color:#64748B;">خاص بالمعلمة لفتح الإجابة</p>
+            <input type="password" id="pinInput" class="pin-input-box" maxlength="4" placeholder="****">
+            <button style="background:var(--green-success); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; font-size:1.1rem;" onclick="verifyPin()">تأكيد وكشف الإجابة ✨</button>
+        </div>
+    </div>
+
+    <!-- Modal PIN Error Card -->
+    <div class="modal-overlay" id="pinErrorModalOverlay">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closePinErrorModal()">X</button>
+            <i class="fa-solid fa-circle-xmark fa-3x" style="color:var(--red-danger); margin-bottom:10px;"></i>
+            <h2 style="color:var(--red-danger);">الرمز السري غير صحيح!</h2>
+            <p style="margin:15px 0; color:#64748B; font-size:1.05rem;">يرجى التأكد من الرقم السري وإعادة المحاولة مجدداً 🙏</p>
+            <button style="background:var(--red-danger); color:white; border:none; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="closePinErrorModal()">حسناً 👍</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK v9 Module Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-        // إعدادات Firebase الخاصة بمشروعك
+        // إعدادات Firebase الخاصه بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyBgWsmcEoNoiemwL-Vl8M2v-Fyz2AedAqA",
             authDomain: "top-goal-lesson-55a48.firebaseapp.com",
@@ -33,3 +927,290 @@
             }
         });
     </script>
+
+    <!-- JavaScript Main Engine -->
+    <script>
+        // 16 Students Alphabetically
+        const rawStudents = [
+            "تالا بنت إبراهيم المرحبي", "تالا عبدالله الشهراني", "جوانا بنت عبدالله الشهراني",
+            "جواهر بنت محمد الأكلبي", "حور ناصر الشهراني", "دانه بنت محمد العلياني",
+            "دينا متعب الشهراني", "رتيل بنت عامر الشهراني", "روان عايض", "صالحه علي الشهراني",
+            "فاطمه بنت ربيعان المعاوي", "لين بنت سعيد الشهراني", "نيهال عجب الشهراني",
+            "هياء بنت محمد المعاوي", "ود مسعود الشهراني", "وسن مبارك الشهراني"
+        ];
+
+        window.state = {
+            currentStage: 0,
+            scores: [0, 0, 0],
+            attendance: rawStudents.map(fullName => ({ fullName, present: true, group: null }))
+        };
+
+        window.renderUIFromState = function() {
+            document.querySelectorAll(".stage-btn").forEach((btn, i) => btn.classList.toggle("active", i === window.state.currentStage));
+            document.querySelectorAll(".stage-card").forEach((card, i) => card.classList.toggle("active", i === window.state.currentStage));
+
+            window.state.scores.forEach((sc, i) => {
+                const el = document.getElementById(`score${i}`);
+                if (el) el.innerText = sc;
+            });
+
+            renderAttendanceList();
+            renderGroupsList();
+        };
+
+        function renderAttendanceList() {
+            const list = document.getElementById("attendanceList");
+            if (!list) return;
+            list.innerHTML = "";
+            window.state.attendance.forEach((st, idx) => {
+                const item = document.createElement("div");
+                item.className = `student-item ${st.present ? '' : 'absent'}`;
+                item.draggable = st.present;
+                item.ondragstart = (e) => e.dataTransfer.setData("text/plain", idx);
+                item.innerHTML = `
+                    <span>${st.fullName}</span>
+                    <button style="border:none; background:none; cursor:pointer;" onclick="toggleAttendance(${idx})">
+                        ${st.present ? '✅' : '❌'}
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        window.toggleAttendance = function(idx) {
+            window.state.attendance[idx].present = !window.state.attendance[idx].present;
+            if (window.syncDataToFirebase) window.syncDataToFirebase();
+            playAudioEffect('sad');
+        };
+
+        window.allowDrop = function(ev) { ev.preventDefault(); };
+        window.dropStudent = function(ev, groupName) {
+            ev.preventDefault();
+            const idx = ev.dataTransfer.getData("text/plain");
+            window.state.attendance[idx].group = groupName;
+            if (window.syncDataToFirebase) window.syncDataToFirebase();
+            playAudioEffect('happy');
+        };
+
+        function renderGroupsList() {
+            ["A", "B", "C"].forEach(g => {
+                const container = document.getElementById(`group${g}-list`);
+                if (!container) return;
+                const members = window.state.attendance.filter(s => s.group === `Group ${g}`);
+                container.innerHTML = members.map(m => `<span style="display:inline-block; background:white; padding:4px 8px; border-radius:6px; margin:2px; font-size:0.8rem; font-weight:bold; border:1px solid #CBD5E1;">${m.fullName}</span>`).join("");
+            });
+        }
+
+        window.updateScore = function(grpIdx, delta) {
+            window.state.scores[grpIdx] = Math.max(0, window.state.scores[grpIdx] + delta);
+            if (window.syncDataToFirebase) window.syncDataToFirebase();
+            playAudioEffect(delta > 0 ? 'happy' : 'sad');
+        };
+
+        window.switchStage = function(idx) {
+            window.state.currentStage = idx;
+            if (window.syncDataToFirebase) window.syncDataToFirebase();
+            playAudioEffect('happy');
+        };
+
+        // Audio Effects Engine
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playAudioEffect(type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+
+            if (type === 'happy') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+            } else if (type === 'sad') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+            }
+        }
+
+        // Timer Controls
+        let masterTime = 2400, masterInterval = null;
+        window.toggleMasterTimer = function() {
+            const icon = document.getElementById("masterPlayIcon");
+            if (masterInterval) {
+                clearInterval(masterInterval); masterInterval = null; icon.className = "fa-solid fa-play";
+            } else {
+                icon.className = "fa-solid fa-pause";
+                masterInterval = setInterval(() => {
+                    if (masterTime > 0) { masterTime--; document.getElementById("masterTimer").innerText = `${Math.floor(masterTime/60).toString().padStart(2,'0')}:${(masterTime%60).toString().padStart(2,'0')}`; }
+                }, 1000);
+            }
+        };
+
+        window.resetMasterTimer = function() {
+            if(masterInterval) clearInterval(masterInterval); masterInterval = null; masterTime = 2400;
+            document.getElementById("masterTimer").innerText = "40:00"; document.getElementById("masterPlayIcon").className = "fa-solid fa-play";
+        };
+
+        const stageTimes = [240, 300, 600, 480, 360, 240, 180];
+        let stageState = stageTimes.map(t => ({ left: t, interval: null }));
+
+        window.toggleStageTimer = function(idx) {
+            const icon = document.getElementById(`pIcon${idx}`);
+            const st = stageState[idx];
+            if (st.interval) {
+                clearInterval(st.interval); st.interval = null; icon.className = "fa-solid fa-play";
+            } else {
+                icon.className = "fa-solid fa-pause";
+                st.interval = setInterval(() => {
+                    if (st.left > 0) {
+                        st.left--;
+                        document.getElementById(`timer${idx}`).innerText = `${Math.floor(st.left/60).toString().padStart(2,'0')}:${(st.left%60).toString().padStart(2,'0')}`;
+                    }
+                }, 1000);
+            }
+        };
+
+        window.resetStageTimer = function(idx) {
+            if(stageState[idx].interval) clearInterval(stageState[idx].interval); stageState[idx].interval = null; stageState[idx].left = stageTimes[idx];
+            document.getElementById(`timer${idx}`).innerText = `${Math.floor(stageTimes[idx]/60).toString().padStart(2,'0')}:${(stageTimes[idx]%60).toString().padStart(2,'0')}`;
+            document.getElementById(`pIcon${idx}`).className = "fa-solid fa-play";
+        };
+
+        // Modals & Helpers
+        window.openModal = function(title, body) {
+            document.getElementById("modalTitle").innerHTML = title;
+            document.getElementById("modalBody").innerHTML = body;
+            document.getElementById("modalOverlay").style.display = "flex";
+        };
+        window.closeModal = function() { document.getElementById("modalOverlay").style.display = "none"; };
+
+        window.openInstrumentCard = function(title, emoji, desc) {
+            openModal(`${emoji} ${title}`, `<div style="font-size:4rem; margin:10px 0;">${emoji}</div><p style="font-size:1.2rem; font-weight:bold;">${desc}</p>`);
+            playAudioEffect('happy');
+        };
+
+        window.awardValueScore = function(grpIdx) {
+            updateScore(grpIdx, 1);
+            openModal("💖 تفعيل القيمة السلوكية", `تم منح نقطة لـ Group ${["A","B","C"][grpIdx]} لتطبيق القيمة والمهارة بنجاح! 👏✨`);
+        };
+
+        // Puzzle Game Engine
+        let selectedPuzzleTile = null;
+        window.selectPuzzleTile = function(el, id, matchKey) {
+            document.querySelectorAll(".puzzle-tile.wrong-match").forEach(t => t.className = "puzzle-tile");
+
+            if (!selectedPuzzleTile) {
+                selectedPuzzleTile = { el, id, matchKey };
+                el.classList.add("selected");
+            } else {
+                if (selectedPuzzleTile.el === el) {
+                    el.classList.remove("selected");
+                    selectedPuzzleTile = null;
+                    return;
+                }
+                
+                if (selectedPuzzleTile.matchKey === matchKey && selectedPuzzleTile.id !== id) {
+                    selectedPuzzleTile.el.className = "puzzle-tile correct-match";
+                    el.className = "puzzle-tile correct-match";
+                    openModal("👏 تطابق صحيح!", `أحسنتن! تم ربط آلة <b>${matchKey.toUpperCase()}</b> بنجاح! ✨`);
+                    playAudioEffect('happy');
+                } else {
+                    selectedPuzzleTile.el.className = "puzzle-tile wrong-match";
+                    el.className = "puzzle-tile wrong-match";
+                    openModal("❌ تطابق غير صحيح", "هاتان القطعتان غير متطابقتين، حاولن مرة أخرى! 💪");
+                    playAudioEffect('sad');
+                }
+                selectedPuzzleTile = null;
+            }
+        };
+
+        // PIN Reveal Logic
+        let activePinConfig = null;
+        window.openPinModal = function(correctPin, answerText, targetElement) {
+            activePinConfig = { correctPin, answerText, targetElement };
+            document.getElementById("pinInput").value = "";
+            document.getElementById("pinModalOverlay").style.display = "flex";
+            document.getElementById("pinInput").focus();
+        };
+
+        window.closePinModal = function() {
+            document.getElementById("pinModalOverlay").style.display = "none";
+            activePinConfig = null;
+        };
+
+        window.closePinErrorModal = function() {
+            document.getElementById("pinErrorModalOverlay").style.display = "none";
+        };
+
+        window.verifyPin = function() {
+            if (!activePinConfig) return;
+            const inputVal = document.getElementById("pinInput").value;
+            if (inputVal === activePinConfig.correctPin) {
+                activePinConfig.targetElement.className = "reveal-card revealed";
+                activePinConfig.targetElement.innerHTML = `✅ ${activePinConfig.answerText}`;
+                closePinModal();
+                playAudioEffect('happy');
+            } else {
+                closePinModal();
+                document.getElementById("pinErrorModalOverlay").style.display = "flex";
+                playAudioEffect('sad');
+            }
+        };
+
+        window.checkMCQ = function(btn, isCorrect) {
+            btn.className = `mcq-btn ${isCorrect ? 'correct' : 'wrong'}`;
+            if (isCorrect) {
+                openModal("✨ إجابة صحيحة!", "رائع جداً! تم الإجابة بشكل صحيح وتحقيق الهدف ✨");
+            }
+            playAudioEffect(isCorrect ? 'happy' : 'sad');
+        };
+
+        let isPicking = false;
+        window.pickRandomStudent = function() {
+            const presents = window.state.attendance.filter(s => s.present);
+            if (presents.length === 0) {
+                openModal("⚠️ تنبيه الحضور", "جميع الطالبات غائبات!");
+                return;
+            }
+            if (isPicking) return;
+            isPicking = true;
+
+            const display = document.getElementById("pickerDisplay");
+            let counter = 0;
+            
+            const interval = setInterval(() => {
+                const tempPick = presents[Math.floor(Math.random() * presents.length)];
+                display.innerText = `⏳ ${tempPick.fullName}`;
+                playAudioEffect('happy');
+                counter++;
+
+                if (counter > 15) {
+                    clearInterval(interval);
+                    const finalPick = presents[Math.floor(Math.random() * presents.length)];
+                    display.innerText = `🎯 ${finalPick.fullName}`;
+                    isPicking = false;
+                    openModal("🎲 الطالبة المتميزة المختارة:", `تفضلي بالمشاركة يا المبدعة: <b>${finalPick.fullName}</b> ✨`);
+                    playAudioEffect('happy');
+                }
+            }, 100);
+        };
+
+        window.showWinningModal = function() {
+            const max = Math.max(...window.state.scores);
+            const winnerIdx = window.state.scores.indexOf(max);
+            const groupNames = ["Group A (Stars ⭐)", "Group B (Roses 🌸)", "Group C (Butterflies 🦋)"];
+            const winners = window.state.attendance.filter(s => s.group === `Group ${["A","B","C"][winnerIdx]}`).map(s => s.fullName);
+            
+            const membersText = winners.length > 0 ? winners.join("<br>") : "جميع طالبات المجموعة";
+            openModal("🏆 إعلان المجموعة الفائزة", `مبروك لفوز <b>${groupNames[winnerIdx]}</b> بـ ${max} نقطة!<br><br><b>طالبات المجموعة الفائزة:</b><br>${membersText} 👏🎉`);
+            playAudioEffect('happy');
+        };
+
+        // Initial Local Render
+        window.renderUIFromState();
+    </script>
+</body>
+</html>
