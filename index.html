@@ -540,7 +540,7 @@
                 <span class="badge-pill"><i class="fa-solid fa-user-tie"></i> المديرة: أ. غلا آل جدران</span>
                 <span class="badge-pill" style="background:#F59E0B; color:white;"><i class="fa-solid fa-book"></i> المادة: Top Goal 3</span>
                 <span class="badge-pill" style="background:#10B981; color:white;"><i class="fa-solid fa-music"></i> الدرس: Unit 3 - Interests</span>
-                <span class="sync-badge" id="syncStatus"><i class="fa-solid fa-wifi"></i> متصل بالمزامنة</span>
+                <span class="sync-badge" id="syncStatus"><i class="fa-solid fa-check"></i> جاهز وتفاعلي</span>
             </div>
             <div class="master-timer-box">
                 <i class="fa-solid fa-stopwatch"></i>
@@ -593,7 +593,7 @@
             <div class="sidebar-card">
                 <div class="sidebar-title">
                     <i class="fa-solid fa-clipboard-user"></i>
-                    <span>التحضير وااختيار الأسماء الحاضرة</span>
+                    <span>التحضير واختيار الأسماء الحاضرة</span>
                 </div>
                 
                 <div class="attendance-list" id="attendanceList"></div>
@@ -905,21 +905,8 @@
         </div>
     </div>
 
-    <!-- Firebase SDK & Global Logic Intersect -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBgWsmcEoNoiemwL-Vl8M2v-Fyz2AedAqA",
-            authDomain: "top-goal-lesson-55a48.firebaseapp.com",
-            databaseURL: "https://top-goal-lesson-55a48-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "top-goal-lesson-55a48",
-            storageBucket: "top-goal-lesson-55a48.firebasestorage.app",
-            messagingSenderId: "388539643792",
-            appId: "1:388539643792:web:889e2adf6cc9a2619ae515"
-        };
-
+    <!-- Vanilla Standalone Script Engine (Guaranteed Execution & Safe Async Firebase) -->
+    <script>
         const rawStudents = [
             "تالا بنت إبراهيم المرحبي", "تالا عبدالله الشهراني", "جوانا بنت عبدالله الشهراني",
             "جواهر بنت محمد الأكلبي", "حور ناصر الشهراني", "دانه بنت محمد العلياني",
@@ -934,23 +921,7 @@
             attendance: rawStudents.map(fullName => ({ fullName, present: true, group: null }))
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const stateRef = ref(db, 'liveLessonState');
-
-        window.syncDataToFirebase = function() {
-            set(stateRef, window.state).catch(err => console.log("خطأ في المزامنة:", err));
-        };
-
-        onValue(stateRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                window.state = data;
-                window.renderUIFromState();
-            }
-        });
-
-        // Binding Core Functions to Window Context explicitly
+        // Render UI locally instantly
         window.renderUIFromState = function() {
             document.querySelectorAll(".stage-btn").forEach((btn, i) => btn.classList.toggle("active", i === window.state.currentStage));
             document.querySelectorAll(".stage-card").forEach((card, i) => card.classList.toggle("active", i === window.state.currentStage));
@@ -985,6 +956,7 @@
 
         window.toggleAttendance = function(idx) {
             window.state.attendance[idx].present = !window.state.attendance[idx].present;
+            window.renderUIFromState();
             if (window.syncDataToFirebase) window.syncDataToFirebase();
             playAudioEffect('sad');
         };
@@ -995,6 +967,7 @@
             const idx = ev.dataTransfer.getData("text/plain");
             if (idx !== undefined && window.state.attendance[idx]) {
                 window.state.attendance[idx].group = groupName;
+                window.renderUIFromState();
                 if (window.syncDataToFirebase) window.syncDataToFirebase();
                 playAudioEffect('happy');
             }
@@ -1011,20 +984,22 @@
 
         window.updateScore = function(grpIdx, delta) {
             window.state.scores[grpIdx] = Math.max(0, window.state.scores[grpIdx] + delta);
+            window.renderUIFromState();
             if (window.syncDataToFirebase) window.syncDataToFirebase();
             playAudioEffect(delta > 0 ? 'happy' : 'sad');
         };
 
         window.switchStage = function(idx) {
             window.state.currentStage = idx;
+            window.renderUIFromState();
             if (window.syncDataToFirebase) window.syncDataToFirebase();
             playAudioEffect('happy');
         };
 
-        // Audio Effects
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Audio Effects Engine
         function playAudioEffect(type) {
             try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain); gain.connect(audioCtx.destination);
@@ -1045,7 +1020,7 @@
             } catch(e) {}
         }
 
-        // Timers
+        // Timers Controls
         let masterTime = 2400, masterInterval = null;
         window.toggleMasterTimer = function() {
             const icon = document.getElementById("masterPlayIcon");
@@ -1089,7 +1064,7 @@
             document.getElementById(`pIcon${idx}`).className = "fa-solid fa-play";
         };
 
-        // Modals Logic
+        // Modals Controls
         window.openModal = function(title, body) {
             document.getElementById("modalTitle").innerHTML = title;
             document.getElementById("modalBody").innerHTML = body;
@@ -1107,7 +1082,7 @@
             openModal("💖 تفعيل القيمة السلوكية", `تم منح نقطة لـ Group ${["A","B","C"][grpIdx]} لتطبيق القيمة والمهارة بنجاح! 👏✨`);
         };
 
-        // Puzzle Logic
+        // Puzzle Game Engine
         let selectedPuzzleTile = null;
         window.selectPuzzleTile = function(el, id, matchKey) {
             document.querySelectorAll(".puzzle-tile.wrong-match").forEach(t => t.className = "puzzle-tile");
@@ -1219,8 +1194,46 @@
             playAudioEffect('happy');
         };
 
-        // Initialize App Rendering
-        window.renderUIFromState();
+        // Initial UI Execution
+        document.addEventListener("DOMContentLoaded", () => {
+            window.renderUIFromState();
+        });
+    </script>
+
+    <!-- Async Background Firebase Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgWsmcEoNoiemwL-Vl8M2v-Fyz2AedAqA",
+            authDomain: "top-goal-lesson-55a48.firebaseapp.com",
+            databaseURL: "https://top-goal-lesson-55a48-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "top-goal-lesson-55a48",
+            storageBucket: "top-goal-lesson-55a48.firebasestorage.app",
+            messagingSenderId: "388539643792",
+            appId: "1:388539643792:web:889e2adf6cc9a2619ae515"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+            const stateRef = ref(db, 'liveLessonState');
+
+            window.syncDataToFirebase = function() {
+                set(stateRef, window.state).catch(err => console.log("Firebase sync error:", err));
+            };
+
+            onValue(stateRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    window.state = data;
+                    if (window.renderUIFromState) window.renderUIFromState();
+                }
+            });
+        } catch (e) {
+            console.log("Firebase Init Bypass:", e);
+        }
     </script>
 </body>
 </html>
