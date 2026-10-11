@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الدرس التفاعلي - أ. منال المعاوي | Top Goal 3</title>
+    <title>Interactive Lesson Platform - Ms. Manal Al-Maawi | Top Goal 3</title>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,7 +26,7 @@
 
         * {
             box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Fredoka', 'Tajawal', sans-serif;
             margin: 0;
             padding: 0;
             transition: all 0.2s ease;
@@ -39,6 +39,8 @@
             flex-direction: column;
             min-height: 100vh;
             overflow-x: auto;
+            text-align: left;
+            direction: ltr;
         }
 
         /* Header Navigation */
@@ -120,7 +122,7 @@
         /* Responsive Layout Grid */
         .workspace {
             display: grid;
-            grid-template-columns: minmax(280px, 320px) 1fr;
+            grid-template-columns: minmax(320px, 360px) 1fr;
             gap: 20px;
             padding: 15px;
             max-width: 1600px;
@@ -213,13 +215,14 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+            margin-bottom: 10px;
         }
 
         .student-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             padding: 6px 10px;
             background: #F8FAFC;
             border-radius: 8px;
@@ -235,25 +238,75 @@
             opacity: 0.6;
         }
 
-        /* Digital Random Picker Container */
+        .student-group-badge {
+            font-size: 0.7rem;
+            background: var(--purple-light);
+            color: var(--purple-main);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+        /* Groups container in sidebar */
+        .sidebar-groups-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .sidebar-group-box {
+            background: #F8FAFC;
+            border: 2px dashed #CBD5E1;
+            border-radius: 10px;
+            padding: 8px;
+            min-height: 60px;
+        }
+        .sidebar-group-box.butterflies { border-color: var(--green-success); background: #ECFDF5; }
+        .sidebar-group-box.princesses { border-color: var(--pink-main); background: #FFF0F5; }
+        .sidebar-group-box.queens { border-color: var(--purple-main); background: #F3E8FF; }
+
+        .group-members-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .group-member-tag {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border: 1px solid #CBD5E1;
+        }
+        .group-member-tag.absent-tag {
+            background: #FEE2E2;
+            color: #991B1B;
+            text-decoration: line-through;
+        }
+
+        /* Digital Random Pickers */
         .picker-box {
             background: linear-gradient(135deg, var(--purple-light), var(--pink-light));
             border: 2px dashed var(--purple-main);
             border-radius: 16px;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             margin-top: 10px;
         }
 
         .picker-display {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--purple-main);
             background: white;
-            padding: 10px;
+            padding: 8px;
             border-radius: 10px;
-            margin-bottom: 10px;
-            min-height: 45px;
+            margin-bottom: 8px;
+            min-height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -264,12 +317,13 @@
             background: linear-gradient(135deg, var(--purple-main), var(--pink-main));
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
             width: 100%;
+            font-size: 0.9rem;
         }
 
         /* Stages Navigation Bar */
@@ -286,13 +340,13 @@
 
         .stage-btn {
             flex: 1;
-            min-width: 100px;
+            min-width: 90px;
             padding: 8px 6px;
             border: none;
             background: #F1F5F9;
             border-radius: var(--radius-md);
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #64748B;
             cursor: pointer;
             display: flex;
@@ -350,26 +404,6 @@
             gap: 6px;
             font-size: 0.9rem;
         }
-
-        /* Drag & Drop Group Box */
-        .groups-dnd-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .group-dnd-box {
-            background: #F8FAFC;
-            border: 2px dashed #CBD5E1;
-            border-radius: 15px;
-            padding: 12px;
-            min-height: 120px;
-        }
-
-        .group-dnd-box.a { border-color: var(--blue-main); background: #EFF6FF; }
-        .group-dnd-box.b { border-color: var(--yellow-accent); background: #FEFCE8; }
-        .group-dnd-box.c { border-color: var(--green-success); background: #ECFDF5; }
 
         /* Puzzle Game Components */
         .puzzle-grid-game {
@@ -451,7 +485,7 @@
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
-            text-align: right;
+            text-align: left;
             font-size: 0.95rem;
         }
 
@@ -485,7 +519,7 @@
         .close-modal-btn {
             position: absolute;
             top: 12px;
-            left: 12px;
+            right: 12px;
             background: #F1F5F9;
             border: none;
             width: 32px;
@@ -535,12 +569,12 @@
     <header>
         <div class="header-container">
             <div class="school-info">
-                <span class="badge-pill"><i class="fa-solid fa-school"></i> مدرسة الهيشة الابتدائية</span>
-                <span class="badge-pill"><i class="fa-solid fa-chalkboard-user"></i> المعلمة: أ. منال المعاوي</span>
-                <span class="badge-pill"><i class="fa-solid fa-user-tie"></i> المديرة: أ. غلا آل جدران</span>
-                <span class="badge-pill" style="background:#F59E0B; color:white;"><i class="fa-solid fa-book"></i> المادة: Top Goal 3 لغة إنجليزية</span>
-                <span class="badge-pill" style="background:#10B981; color:white;"><i class="fa-solid fa-music"></i> الدرس: Unit 3 - Interests</span>
-                <span class="sync-badge" id="syncStatus"><i class="fa-solid fa-check"></i> الخميس 4جمادى الأولى 1448هـ</span>
+                <span class="badge-pill"><i class="fa-solid fa-school"></i> Al-Hisha Elementary School</span>
+                <span class="badge-pill"><i class="fa-solid fa-chalkboard-user"></i> Teacher: Ms. Manal Al-Maawi</span>
+                <span class="badge-pill"><i class="fa-solid fa-user-tie"></i> Principal: Ms. Ghala Al-Jadran</span>
+                <span class="badge-pill" style="background:#F59E0B; color:white;"><i class="fa-solid fa-book"></i> Subject: Top Goal 3</span>
+                <span class="badge-pill" style="background:#10B981; color:white;"><i class="fa-solid fa-music"></i> Lesson: Unit 3 - Interests</span>
+                <span class="sync-badge" id="syncStatus"><i class="fa-solid fa-check"></i> Thursday, Jumada I 4, 1448 AH</span>
             </div>
             <div class="master-timer-box">
                 <i class="fa-solid fa-stopwatch"></i>
@@ -554,17 +588,17 @@
     <!-- Workspace -->
     <div class="workspace">
 
-        <!-- RIGHT SIDEBAR -->
+        <!-- RIGHT SIDEBAR (Always Visible with Attendance, Groups & Pickers) -->
         <aside class="right-sidebar">
             
             <!-- Group Scores -->
             <div class="sidebar-card">
                 <div class="sidebar-title">
                     <i class="fa-solid fa-trophy" style="color:var(--yellow-accent)"></i>
-                    <span>لوحة النقاط والتعزيز</span>
+                    <span>Points & Rewards</span>
                 </div>
                 <div class="score-row">
-                    <span>⭐ Group A (Stars)</span>
+                    <span>🦋 Butterflies</span>
                     <div style="display:flex; align-items:center; gap:6px;">
                         <button class="score-btn btn-minus" onclick="updateScore(0, -1)">-</button>
                         <span class="score-val" id="score0">0</span>
@@ -572,7 +606,7 @@
                     </div>
                 </div>
                 <div class="score-row">
-                    <span>🌸 Group B (Roses)</span>
+                    <span>👑 Princesses</span>
                     <div style="display:flex; align-items:center; gap:6px;">
                         <button class="score-btn btn-minus" onclick="updateScore(1, -1)">-</button>
                         <span class="score-val" id="score1">0</span>
@@ -580,7 +614,7 @@
                     </div>
                 </div>
                 <div class="score-row">
-                    <span>🦋 Group C (Butterflies)</span>
+                    <span>💎 Queens</span>
                     <div style="display:flex; align-items:center; gap:6px;">
                         <button class="score-btn btn-minus" onclick="updateScore(2, -1)">-</button>
                         <span class="score-val" id="score2">0</span>
@@ -589,19 +623,50 @@
                 </div>
             </div>
 
-            <!-- Attendance Checklist & Digital Random Picker -->
+            <!-- Attendance & Drag & Drop Groups -->
             <div class="sidebar-card">
-                <div class="sidebar-title">
-                    <i class="fa-solid fa-clipboard-user"></i>
-                    <span>التحضير واختيار الأسماء الحاضرة</span>
+                <div class="sidebar-title" style="justify-content: space-between;">
+                    <span><i class="fa-solid fa-clipboard-user"></i> Attendance & Groups</span>
+                    <button onclick="resetGroupsDistribution()" style="background:#EF4444; color:white; border:none; padding:2px 8px; border-radius:6px; font-size:0.75rem; cursor:pointer;" title="Reset Groups">Reset</button>
                 </div>
                 
+                <p style="font-size:0.75rem; color:#64748B; margin-bottom:6px;">Drag student to group box:</p>
                 <div class="attendance-list" id="attendanceList"></div>
 
+                <div class="sidebar-groups-container">
+                    <div class="sidebar-group-box butterflies" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Butterflies')">
+                        <span style="font-size:0.8rem; font-weight:bold; color:var(--green-success);">🦋 Butterflies</span>
+                        <div class="group-members-list" id="sidebarGroupButterflies"></div>
+                    </div>
+                    <div class="sidebar-group-box princesses" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Princesses')">
+                        <span style="font-size:0.8rem; font-weight:bold; color:var(--pink-main);">👑 Princesses</span>
+                        <div class="group-members-list" id="sidebarGroupPrincesses"></div>
+                    </div>
+                    <div class="sidebar-group-box queens" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Queens')">
+                        <span style="font-size:0.8rem; font-weight:bold; color:var(--purple-main);">💎 Queens</span>
+                        <div class="group-members-list" id="sidebarGroupQueens"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digital Pickers -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">
+                    <i class="fa-solid fa-dice"></i>
+                    <span>Random Pickers</span>
+                </div>
+                
                 <div class="picker-box">
-                    <div class="picker-display" id="pickerDisplay">🎲 جاهز للاختيار</div>
+                    <div class="picker-display" id="pickerDisplay">🎲 Ready to Pick Student</div>
                     <button class="spin-btn-action" onclick="pickRandomStudent()">
-                        ✨ اختيار طالبة عشوائياً
+                        ✨ Pick Student
+                    </button>
+                </div>
+
+                <div class="picker-box" style="margin-top:10px; border-color:var(--blue-main);">
+                    <div class="picker-display" id="groupPickerDisplay" style="color:var(--blue-main);">🏆 Ready to Pick Group</div>
+                    <button class="spin-btn-action" style="background:linear-gradient(135deg, var(--blue-main), #60A5FA);" onclick="pickRandomGroup()">
+                        🌟 Pick Group
                     </button>
                 </div>
             </div>
@@ -614,60 +679,94 @@
             <!-- Stages Navigation -->
             <div class="stages-bar">
                 <button class="stage-btn active" onclick="switchStage(0)">
-                    <span>المرحلة 1</span>
-                    <span>التمهيد والتقسيم</span>
+                    <span>Stage 1</span>
+                    <span>National Intro</span>
                 </button>
                 <button class="stage-btn" onclick="switchStage(1)">
-                    <span>المرحلة 2</span>
-                    <span>الأهداف والقيم</span>
+                    <span>Stage 2</span>
+                    <span>Objectives & Values</span>
                 </button>
                 <button class="stage-btn" onclick="switchStage(2)">
-                    <span>المرحلة 3</span>
-                    <span>المفردات والشرح</span>
+                    <span>Stage 3</span>
+                    <span>Pre-Assessment 1</span>
                 </button>
                 <button class="stage-btn" onclick="switchStage(3)">
-                    <span>المرحلة 4</span>
-                    <span>استراتيجية Puzzle</span>
+                    <span>Stage 4</span>
+                    <span>Vocabulary & Pages</span>
                 </button>
                 <button class="stage-btn" onclick="switchStage(4)">
-                    <span>المرحلة 5</span>
-                    <span>Who/What/Action</span>
+                    <span>Stage 5</span>
+                    <span>Puzzle Strategy</span>
                 </button>
                 <button class="stage-btn" onclick="switchStage(5)">
-                    <span>المرحلة 6</span>
-                    <span>التعليم المتمايز</span>
+                    <span>Stage 6</span>
+                    <span>Who/What/Action</span>
                 </button>
                 <button class="stage-btn" onclick="switchStage(6)">
-                    <span>المرحلة 7</span>
-                    <span>التقويم والتكريم</span>
+                    <span>Stage 7</span>
+                    <span>Pre-Assessment 2</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(7)">
+                    <span>Stage 8</span>
+                    <span>Differentiation</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(8)">
+                    <span>Stage 9</span>
+                    <span>Cross-Curricular</span>
+                </button>
+                <button class="stage-btn" onclick="switchStage(9)">
+                    <span>Stage 10</span>
+                    <span>Evaluation & Award</span>
                 </button>
             </div>
 
-            <!-- STAGE 1: GROUPING & WARM-UP -->
+            <!-- STAGE 1: NATIONAL INTRODUCTION -->
             <div class="stage-card active" id="stage-0">
                 <div class="stage-header">
-                    <h3><i class="fa-solid fa-users" style="color:var(--pink-main)"></i> المرحلة الأولى: تقسيم المجموعات بالاسم الكامل (4 دقائق)</h3>
+                    <h3><i class="fa-solid fa-flag" style="color:var(--green-success)"></i> Stage 1: National Introduction & Appreciation (3 Minutes)</h3>
                     <div class="stage-timer-box">
-                        <i class="fa-solid fa-clock"></i> <span id="timer0">04:00</span>
+                        <i class="fa-solid fa-clock"></i> <span id="timer0">03:00</span>
                         <button class="timer-btn" onclick="toggleStageTimer(0)"><i class="fa-solid fa-play" id="pIcon0"></i></button>
                         <button class="timer-btn" onclick="resetStageTimer(0)"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
 
-                <p>اسحبي اسم الطالبة (بالاسم الكامل) من قائمة التحضير باليمين وأسقطيها داخل مجموعتها المناسبة:</p>
+                <div style="display:flex; flex-direction:column; gap:15px; text-align:center;">
+                    <!-- علم المملكة -->
+                    <div style="display:flex; justify-content:center; align-items:center;">
+                        <div style="background:#006C35; color:white; padding:15px 30px; border-radius:12px; font-weight:900; font-size:1.4rem; box-shadow:0 4px 15px rgba(0,108,53,0.3); border:2px solid #FFD166; display:inline-block;">
+                            * Kingdom of Saudi Arabia *
+                        </div>
+                    </div>
 
-                <div class="groups-dnd-container">
-                    <div class="group-dnd-box a" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Group A')">
-                        <h4 style="color:var(--blue-main);">⭐ Group A (Stars)</h4>
-                        <div class="group-members-list" id="groupA-list"></div>
+                    <!-- بوكس الآية -->
+                    <div style="background:#F0FDF4; border:2px solid #10B981; border-radius:12px; padding:15px;">
+                        <p style="font-size:1.3rem; font-weight:bold; color:#047857; direction:rtl;">
+                            ( رَبِّ اجْعَلْ هَٰذَا بَلَدًا آمِنًا )
+                        </p>
                     </div>
-                    <div class="group-dnd-box b" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Group B')">
-                        <h4 style="color:#D97706;">🌸 Group B (Roses)</h4>
-                        <div class="group-members-list" id="groupB-list"></div>
+
+                    <!-- دعاء القيادة والوطن بالانجليزي -->
+                    <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:12px; padding:15px; text-align:left; line-height:1.8;">
+                        <p style="font-size:1.05rem; color:var(--dark-text);">
+                            "O Allah, protect our beloved homeland, the Kingdom of Saudi Arabia, from all evil and harm. Protect our leader and Imam, the Custodian of the Two Holy Mosques, King Salman bin Abdulaziz Al Saud, may Allah protect him, and his trustworthy Crown Prince, His Royal Highness Prince Mohammed bin Salman bin Abdulaziz Al Saud, may Allah protect them. Support them with victory and empowerment, and honor Islam and Muslims through them."
+                        </p>
                     </div>
-                    <div class="group-dnd-box c" ondragover="allowDrop(event)" ondrop="dropStudent(event, 'Group C')">
-                        <h4 style="color:var(--green-success);">🦋 Group C (Butterflies)</h4>
-                        <div class="group-members-list" id="groupC-list"></div>
+
+                    <!-- صناديق الشكر المنفصلة جنب بعض بالانجليزي -->
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:5px;">
+                        <div style="background:#EFF6FF; border:2px solid #3B82F6; border-radius:12px; padding:12px; text-align:left;">
+                            <h4 style="color:#1D4ED8; margin-bottom:6px;"><i class="fa-solid fa-hands-holding-child"></i> Ministry of Education</h4>
+                            <p style="font-size:0.95rem; color:#1E3A8A;">
+                                Sincere thanks and appreciation to the Ministry of Education for their tremendous efforts in advancing the educational process and supporting the journey of excellence for our students.
+                            </p>
+                        </div>
+                        <div style="background:#FDF4FF; border:2px solid #8B5CF6; border-radius:12px; padding:12px; text-align:left;">
+                            <h4 style="color:#6D28D9; margin-bottom:6px;"><i class="fa-solid fa-award"></i> School Administration</h4>
+                            <p style="font-size:0.95rem; color:#4C1D95;">
+                                Special thanks and gratitude to the distinguished School Principal, Ms. <b>Ghala Al-Jadran</b>, for her continuous support and dedication to providing an inspiring learning environment.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -675,7 +774,7 @@
             <!-- STAGE 2: OBJECTIVES & VALUES -->
             <div class="stage-card" id="stage-1">
                 <div class="stage-header">
-                    <h3><i class="fa-solid fa-bullseye" style="color:var(--purple-main)"></i> المرحلة الثانية: الأهداف والقيم الأساسية (5 دقائق)</h3>
+                    <h3><i class="fa-solid fa-bullseye" style="color:var(--purple-main)"></i> Stage 2: Objectives & Core Values (5 Minutes)</h3>
                     <div class="stage-timer-box">
                         <i class="fa-solid fa-clock"></i> <span id="timer1">05:00</span>
                         <button class="timer-btn" onclick="toggleStageTimer(1)"><i class="fa-solid fa-play" id="pIcon1"></i></button>
@@ -685,187 +784,282 @@
 
                 <div style="display:flex; flex-direction:column; gap:12px;">
                     <div style="background:#EEF2FF; padding:15px; border-radius:12px;">
-                        <h3 style="color:var(--primary); margin-bottom:8px;">🎯 أهداف الدرس (Lesson Objectives):</h3>
-                        <ul style="line-height:2; margin-right:20px;">
-                            <li>أن تتعرف الطالبة على مفردات الاهتمامات والآلات الموسيقية (drums, violin, oud, concert).</li>
-                            <li>أن تقرأ الطالبة الجمل وتستخرج الأفكار الرئيسية بشكل صحيح.</li>
-                            <li>أن تطبق الطالبة استراتيجيات التعلم التفاعلي والعد مع مجموعتها.</li>
+                        <h3 style="color:var(--blue-main); margin-bottom:8px;">🎯 Lesson Objectives:</h3>
+                        <ul style="line-height:2; margin-left:20px;">
+                            <li>Students will identify vocabulary related to interests and musical instruments (drums, violin, oud, concert).</li>
+                            <li>Students will read sentences and extract main ideas correctly.</li>
+                            <li>Students will apply interactive learning and counting strategies within their groups.</li>
                         </ul>
                     </div>
 
                     <div style="background:#FEF3C7; padding:15px; border-radius:12px;">
-                        <h3 style="color:#D97706; margin-bottom:8px;">💖 غرس القيم والمهارات الأساسية:</h3>
-                        <p><b>💖 قيمة اليوم:</b> التعاون والتعاطف بين المجموعات.</p>
-                        <p><b>🔢 المهارات العددية:</b> حساب أرقام الأسئلة وعد نقاط تميز المجموعة.</p>
-                        <p><b>📖 مهارة القراءة والكتابة:</b> استخدام السبورة والأيباد في تدوين الإجابات.</p>
+                        <h3 style="color:#D97706; margin-bottom:8px;">💖 Core Values & Skills:</h3>
+                        <p><b>💖 Value of the Day:</b> Cooperation and empathy among groups.</p>
+                        <p><b>🔢 Numeracy Skills:</b> Calculating question numbers and counting group reward points.</p>
+                        <p><b>📖 Literacy Skills:</b> Using the whiteboard and iPad to record answers.</p>
                     </div>
 
                     <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
-                        <p><b>⚡ مهمة تفعيل القيمة:</b> ما هي أول مجموعة تعرض مشاركتها بشكل تعاوني وتطبيقي؟</p>
+                        <p><b>⚡ Value Activation Task:</b> Which group is the first to share their work cooperatively?</p>
                         <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
-                            <button style="background:var(--blue-main); color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(0)">منح نقطة لـ Group A ⭐</button>
-                            <button style="background:#D97706; color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(1)">منح نقطة لـ Group B 🌸</button>
-                            <button style="background:var(--green-success); color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(2)">منح نقطة لـ Group C 🦋</button>
+                            <button style="background:var(--green-success); color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(0)">Award Butterflies 🦋</button>
+                            <button style="background:var(--pink-main); color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(1)">Award Princesses 👑</button>
+                            <button style="background:var(--purple-main); color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="awardValueScore(2)">Award Queens 💎</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- STAGE 3: VOCABULARY & LESSON PAGES -->
+            <!-- STAGE 3: PRE-ASSESSMENT 1 -->
             <div class="stage-card" id="stage-2">
                 <div class="stage-header">
-                    <h3><i class="fa-solid fa-book-open" style="color:var(--blue-main)"></i> المرحلة الثالثة: كتاب الدرس ومفردات الآلات (10 دقائق للمعلمة)</h3>
+                    <h3><i class="fa-solid fa-clipboard-question" style="color:var(--yellow-accent)"></i> Stage 3: Pre-Assessment 1 (Quick Warm-up Check)</h3>
                     <div class="stage-timer-box">
-                        <i class="fa-solid fa-clock"></i> <span id="timer2">10:00</span>
+                        <i class="fa-solid fa-clock"></i> <span id="timer2">03:00</span>
                         <button class="timer-btn" onclick="toggleStageTimer(2)"><i class="fa-solid fa-play" id="pIcon2"></i></button>
                         <button class="timer-btn" onclick="resetStageTimer(2)"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
 
-                <p>انقري على اسم الآلة للفتح والاستعراض المكبر مع الطالبة:</p>
+                <div style="display:flex; flex-direction:column; gap:15px;">
+                    <div style="background:#F8FAFC; padding:15px; border-radius:12px; border:1px solid #CBD5E1;">
+                        <p style="font-weight:bold; margin-bottom:10px;">❓ Question 1: What do you like to do in your free time? Choose a common hobby:</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">Play sports / music</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">Sleep all day</button>
+                    </div>
+
+                    <div style="background:#F8FAFC; padding:15px; border-radius:12px; border:1px solid #CBD5E1;">
+                        <p style="font-weight:bold; margin-bottom:10px;">❓ Question 2: Have you ever seen a musical instrument like a violin or drums?</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">Yes, I have!</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">No, never.</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 4: VOCABULARY & LESSON PAGES -->
+            <div class="stage-card" id="stage-3">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-book-open" style="color:var(--blue-main)"></i> Stage 4: Lesson Pages & Vocabulary (10 Minutes)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer3">10:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(3)"><i class="fa-solid fa-play" id="pIcon3"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(3)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <p>Click on an instrument name to open and review it with the student:</p>
 
                 <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:15px; background:#F8FAFC; padding:15px; border-radius:12px;">
-                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Drums (طبول)', '🥁', 'Faris can play these drums.')">🥁 Drums</button>
-                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Violin (كمان)', '🎻', 'Ibrahim wants to play the violin.')">🎻 Violin</button>
-                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Oud (عود)', '🪕', 'Learn to play the traditional Oud!')">🪕 Oud</button>
-                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Concert (حفلة)', '🎶', 'Play in a concert and invite your family!')">🎶 Concert</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Drums', '🥁', 'Faris can play these drums.')">🥁 Drums</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Violin', '🎻', 'Ibrahim wants to play the violin.')">🎻 Violin</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Oud', '🪕', 'Learn to play the traditional Oud!')">🪕 Oud</button>
+                    <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Concert', '🎶', 'Play in a concert and invite your family!')">🎶 Concert</button>
                     <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Classical Music', '🎼', 'We play classical music.')">🎼 Classical</button>
                     <button class="mcq-btn" style="width:auto;" onclick="openInstrumentCard('Traditional Music', '🎺', 'Join the traditional music festival!')">🎺 Traditional</button>
                 </div>
 
                 <div class="lesson-pages-container">
                     <div>
-                        <h4 style="margin-bottom:6px; text-align:center;">📖 الصفحة الأولى (34)</h4>
-                        <img src="page1.png" alt="الصفحة الأولى" class="lesson-page-img" onclick="openModal('📖 صفحة 34', '<img src=\'page1.png\' style=\'width:100%; border-radius:10px;\'>')">
+                        <h4 style="margin-bottom:6px; text-align:center;">📖 Page 34</h4>
+                        <img src="page1.png" alt="Page 34" class="lesson-page-img" onclick="openModal('📖 Page 34', '<img src=\'page1.png\' style=\'width:100%; border-radius:10px;\'>')">
                     </div>
                     <div>
-                        <h4 style="margin-bottom:6px; text-align:center;">📖 الصفحة الثانية (35)</h4>
-                        <img src="page2.png" alt="الصفحة الثانية" class="lesson-page-img" onclick="openModal('📖 صفحة 35', '<img src=\'page2.png\' style=\'width:100%; border-radius:10px;\'>')">
+                        <h4 style="margin-bottom:6px; text-align:center;">📖 Page 35</h4>
+                        <img src="page2.png" alt="Page 35" class="lesson-page-img" onclick="openModal('📖 Page 35', '<img src=\'page2.png\' style=\'width:100%; border-radius:10px;\'>')">
                     </div>
                 </div>
             </div>
 
-            <!-- STAGE 4: PUZZLE STRATEGY -->
-            <div class="stage-card" id="stage-3">
-                <div class="stage-header">
-                    <h3><i class="fa-solid fa-puzzle-piece" style="color:var(--green-success)"></i> المرحلة الرابعة: استراتيجية Puzzle (تركيب المفردات)</h3>
-                    <div class="stage-timer-box">
-                        <i class="fa-solid fa-clock"></i> <span id="timer3">08:00</span>
-                        <button class="timer-btn" onclick="toggleStageTimer(3)"><i class="fa-solid fa-play" id="pIcon3"></i></button>
-                        <button class="timer-btn" onclick="resetStageTimer(3)"><i class="fa-solid fa-rotate-left"></i></button>
-                    </div>
-                </div>
-
-                <p style="margin-bottom:12px;">انقري على صورة الآلة ثم على اسمها المطابق حصراً للربط الصحيح:</p>
-
-                <div class="puzzle-grid-game">
-                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'drums_img', 'drums')">🥁 صورة الطبول</div>
-                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'drums_text', 'drums')">Drums</div>
-                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'violin_img', 'violin')">🎻 صورة الكمان</div>
-                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'violin_text', 'violin')">Violin</div>
-                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'oud_img', 'oud')">🪕 صورة العود</div>
-                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'oud_text', 'oud')">Oud</div>
-                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'piano_text', 'piano')">🎹 Piano</div>
-                </div>
-            </div>
-
-            <!-- STAGE 5: WHO WHAT ACTION -->
+            <!-- STAGE 5: PUZZLE STRATEGY -->
             <div class="stage-card" id="stage-4">
                 <div class="stage-header">
-                    <h3><i class="fa-solid fa-sitemap" style="color:var(--purple-main)"></i> المرحلة الخامسة: استراتيجية Who / What / Action (بالرمز السري)</h3>
+                    <h3><i class="fa-solid fa-puzzle-piece" style="color:var(--green-success)"></i> Stage 5: Puzzle Strategy (Vocabulary Matching)</h3>
                     <div class="stage-timer-box">
-                        <i class="fa-solid fa-clock"></i> <span id="timer4">06:00</span>
+                        <i class="fa-solid fa-clock"></i> <span id="timer4">08:00</span>
                         <button class="timer-btn" onclick="toggleStageTimer(4)"><i class="fa-solid fa-play" id="pIcon4"></i></button>
                         <button class="timer-btn" onclick="resetStageTimer(4)"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
 
-                <p>الجملة المنهجية للتحليل:</p>
-                <div class="sentence-banner">
-                    Faris can play the drums
+                <p style="margin-bottom:12px;">Click on an instrument image and then on its matching name for correct pairing:</p>
+
+                <div class="puzzle-grid-game">
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'drums_img', 'drums')">🥁 Drums Image</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'drums_text', 'drums')">Drums</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'violin_img', 'violin')">🎻 Violin Image</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'violin_text', 'violin')">Violin</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'oud_img', 'oud')">🪕 Oud Image</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'oud_text', 'oud')">Oud</div>
+                    <div class="puzzle-tile" onclick="selectPuzzleTile(this, 'piano_text', 'piano')">🎹 Piano</div>
                 </div>
 
-                <p style="margin-bottom:10px;">انقري للكشف عن الإجابة بإدخال الرمز السري الخـاص بالمعلمة:</p>
-
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
-                    <div class="reveal-card" onclick="openPinModal('11', 'Faris (Subject)', this)">
-                        🔒 كشف (Who / What)
-                    </div>
-                    <div class="reveal-card" onclick="openPinModal('33', 'can play (Action)', this)">
-                        🔒 كشف (Action)
-                    </div>
-                    <div class="reveal-card" onclick="openPinModal('55', 'the drums (Object)', this)">
-                        🔒 كشف (Who / What)
-                    </div>
+                <!-- إضافة أيقونة وميدان Music Festival Mystery Final تحت البزل مباشرة -->
+                <div style="margin-top: 25px; text-align: center;">
+                    <a href="Music_Festival_Mystery_Final-4.html" style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(135deg, #f38d36, #ef6e69); color: white; padding: 14px 28px; border-radius: 16px; font-size: 1.15rem; font-weight: 900; text-decoration: none; box-shadow: 0 6px 20px rgba(243, 141, 54, 0.3); border: 2px solid #fff;">
+                        <i class="fa-solid fa-music" style="font-size: 1.4rem;"></i>
+                        <span>Music Festival Mystery Final</span>
+                        <i class="fa-solid fa-sparkles" style="font-size: 1.2rem; color: #ffe79c;"></i>
+                    </a>
                 </div>
             </div>
 
-            <!-- STAGE 6: DIFFERENTIATION -->
+            <!-- STAGE 6: WHO WHAT ACTION -->
             <div class="stage-card" id="stage-5">
                 <div class="stage-header">
-                    <h3><i class="fa-solid fa-layer-group" style="color:var(--pink-main)"></i> المرحلة السادسة: التعليم المتمايز (خيارات متعددة)</h3>
+                    <h3><i class="fa-solid fa-sitemap" style="color:var(--purple-main)"></i> Stage 6: Who / What / Action Strategy (Secret PIN)</h3>
                     <div class="stage-timer-box">
-                        <i class="fa-solid fa-clock"></i> <span id="timer5">04:00</span>
+                        <i class="fa-solid fa-clock"></i> <span id="timer5">06:00</span>
                         <button class="timer-btn" onclick="toggleStageTimer(5)"><i class="fa-solid fa-play" id="pIcon5"></i></button>
                         <button class="timer-btn" onclick="resetStageTimer(5)"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
 
+                <p>Target sentence for analysis:</p>
+                <div class="sentence-banner">
+                    Faris can play the drums
+                </div>
+
+                <p style="margin-bottom:10px;">Click to reveal the answer by entering the teacher's secret PIN:</p>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+                    <div class="reveal-card" onclick="openPinModal('11', 'Faris (Subject)', this)">
+                        🔒 Reveal (Who / What)
+                    </div>
+                    <div class="reveal-card" onclick="openPinModal('33', 'can play (Action)', this)">
+                        🔒 Reveal (Action)
+                    </div>
+                    <div class="reveal-card" onclick="openPinModal('55', 'the drums (Object)', this)">
+                        🔒 Reveal (Who / What)
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 7: PRE-ASSESSMENT 2 -->
+            <div class="stage-card" id="stage-6">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-clipboard-check" style="color:var(--blue-main)"></i> Stage 7: Pre-Assessment 2 (Prior Knowledge Check)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer6">04:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(6)"><i class="fa-solid fa-play" id="pIcon6"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(6)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:15px;">
+                    <div style="background:#F8FAFC; padding:15px; border-radius:12px; border:1px solid #CBD5E1;">
+                        <p style="font-weight:bold; margin-bottom:10px;">❓ Quick Check: Which word is an action verb?</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">play</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">table</button>
+                    </div>
+
+                    <div style="background:#F8FAFC; padding:15px; border-radius:12px; border:1px solid #CBD5E1;">
+                        <p style="font-weight:bold; margin-bottom:10px;">❓ Quick Check: Complete: "I want to ___ the guitar."</p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">play</button>
+                        <button class="mcq-btn" onclick="checkMCQ(this, false)">read</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 8: DIFFERENTIATION -->
+            <div class="stage-card" id="stage-7">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-layer-group" style="color:var(--pink-main)"></i> Stage 8: Differentiation (Multiple Choice)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer7">04:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(7)"><i class="fa-solid fa-play" id="pIcon7"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(7)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
                 <div style="display:flex; flex-direction:column; gap:15px;">
                     <div style="background:var(--pink-light); padding:15px; border-radius:12px;">
-                        <h4>⭐ Group A (المتقدم):</h4>
+                        <h4>💎 Queens (Advanced):</h4>
                         <p style="margin:6px 0;">Ibrahim wants to play the ________.</p>
                         <button class="mcq-btn" onclick="checkMCQ(this, true)">oud</button>
                         <button class="mcq-btn" onclick="checkMCQ(this, false)">comedy</button>
                     </div>
 
                     <div style="background:var(--purple-light); padding:15px; border-radius:12px;">
-                        <h4>🌸 Group B (المتوسط):</h4>
+                        <h4>👑 Princesses (Intermediate):</h4>
                         <p style="margin:6px 0;">Faris can play these: 🥁</p>
                         <button class="mcq-btn" onclick="checkMCQ(this, true)">drums</button>
                         <button class="mcq-btn" onclick="checkMCQ(this, false)">violin</button>
                     </div>
 
                     <div style="background:#ECFDF5; padding:15px; border-radius:12px;">
-                        <h4>🦋 Group C (الموجه):</h4>
-                        <p style="margin:6px 0;">حدد المفردة المطابقة للكمان: 🎻</p>
+                        <h4>🦋 Butterflies (Guided):</h4>
+                        <p style="margin:6px 0;">Identify the matching word for the violin: 🎻</p>
                         <button class="mcq-btn" onclick="checkMCQ(this, true)">Violin</button>
                         <button class="mcq-btn" onclick="checkMCQ(this, false)">Drums</button>
                     </div>
                 </div>
             </div>
 
-            <!-- STAGE 7: CLOSURE & RECAP -->
-            <div class="stage-card" id="stage-6">
+            <!-- STAGE 9: CROSS-CURRICULAR CONNECTIONS -->
+            <div class="stage-card" id="stage-8">
                 <div class="stage-header">
-                    <h3><i class="fa-solid fa-flag-checkered" style="color:var(--yellow-accent)"></i> المرحلة السابعة: التقويم واسترجاع الأهداف والتكريم (3 دقائق)</h3>
+                    <h3><i class="fa-solid fa-network-wired" style="color:var(--purple-main)"></i> Stage 9: Cross-Curricular Connections (5 Minutes)</h3>
                     <div class="stage-timer-box">
-                        <i class="fa-solid fa-clock"></i> <span id="timer6">03:00</span>
-                        <button class="timer-btn" onclick="toggleStageTimer(6)"><i class="fa-solid fa-play" id="pIcon6"></i></button>
-                        <button class="timer-btn" onclick="resetStageTimer(6)"><i class="fa-solid fa-rotate-left"></i></button>
+                        <i class="fa-solid fa-clock"></i> <span id="timer8">05:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(8)"><i class="fa-solid fa-play" id="pIcon8"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(8)"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
+                </div>
+
+                <p style="margin-bottom:12px;">Click on any subject to explore its connection with our English lesson:</p>
+
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:15px;">
+                    <!-- رياضيات -->
+                    <div style="background:#EFF6FF; border:2px solid #3B82F6; border-radius:12px; padding:20px; text-align:center; cursor:pointer;" onclick="openModal('📐 Mathematics Connection', '<div style=\'font-size:3rem; margin-bottom:10px;\'>🔢</div><p style=\'font-size:1.1rem; line-height:1.6;\'>Counting musical instruments (e.g., counting 3 drums and 2 violins) and calculating total group points and scores.</p>')">
+                        <i class="fa-solid fa-calculator fa-2x" style="color:#1D4ED8; margin-bottom:8px;"></i>
+                        <h4 style="color:#1D4ED8; font-size:1.2rem;">Mathematics 📐</h4>
+                    </div>
+
+                    <!-- علوم -->
+                    <div style="background:#ECFDF5; border:2px solid #10B981; border-radius:12px; padding:20px; text-align:center; cursor:pointer;" onclick="openModal('🔬 Science Connection', '<div style=\'font-size:3rem; margin-bottom:10px;\'>🧪</div><p style=\'font-size:1.1rem; line-height:1.6;\'>Exploring how musical instruments produce sound waves and vibrations through strings and percussion instruments.</p>')">
+                        <i class="fa-solid fa-atom fa-2x" style="color:#047857; margin-bottom:8px;"></i>
+                        <h4 style="color:#047857; font-size:1.2rem;">Science 🔬</h4>
+                    </div>
+
+                    <!-- دين -->
+                    <div style="background:#FEF3C7; border:2px solid #D97706; border-radius:12px; padding:20px; text-align:center; cursor:pointer;" onclick="openModal('🕌 Islamic Studies Connection', '<div style=\'font-size:3rem; margin-bottom:10px;\'>📖</div><p style=\'font-size:1.1rem; line-height:1.6;\'>Emphasizing good manners, cooperation, helping others, and using our talents and skills for the benefit of our community.</p>')">
+                        <i class="fa-solid fa-mosque fa-2x" style="color:#B45309; margin-bottom:8px;"></i>
+                        <h4 style="color:#B45309; font-size:1.2rem;">Islamic Studies 🕌</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 10: EVALUATION, RECAP & AWARDING -->
+            <div class="stage-card" id="stage-9">
+                <div class="stage-header">
+                    <h3><i class="fa-solid fa-flag-checkered" style="color:var(--yellow-accent)"></i> Stage 10: Evaluation, Recap & Awarding (3 Minutes)</h3>
+                    <div class="stage-timer-box">
+                        <i class="fa-solid fa-clock"></i> <span id="timer9">03:00</span>
+                        <button class="timer-btn" onclick="toggleStageTimer(9)"><i class="fa-solid fa-play" id="pIcon9"></i></button>
+                        <button class="timer-btn" onclick="resetStageTimer(9)"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                 </div>
 
                 <div style="display:flex; flex-direction:column; gap:12px;">
                     <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
-                        <p><b>🎯 استرجاع الهدف 1:</b> ما اسم الآلة التي يعزفها إبراهيم؟</p>
+                        <p><b>🎯 Recap Objective 1: What is the instrument that Ibrahim plays?</b></p>
                         <button class="mcq-btn" onclick="checkMCQ(this, true)">Oud / Violin</button>
                         <button class="mcq-btn" onclick="checkMCQ(this, false)">Pizza</button>
                     </div>
 
                     <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
-                        <p><b>📖 استرجاع الهدف 2:</b> ما الفعل (Action) في جملة (Faris can play the drums)؟</p>
+                        <p><b>📖 Recap Objective 2: What is the action in the sentence (Faris can play the drums)?</b></p>
                         <button class="mcq-btn" onclick="checkMCQ(this, true)">can play</button>
                         <button class="mcq-btn" onclick="checkMCQ(this, false)">drums</button>
                     </div>
 
                     <div style="background:#F8FAFC; padding:12px; border-radius:10px; border:1px solid #CBD5E1;">
-                        <p><b>🔢 استرجاع الهدف 3:</b> تطبيق العد وتحديد مجموع النقاط للمجموعة.</p>
-                        <button class="mcq-btn" onclick="checkMCQ(this, true)">تم العد وتحديد النقاط بنجاح ✨</button>
+                        <p><b>🔢 Recap Objective 3: Apply counting and determine total group points.</b></p>
+                        <button class="mcq-btn" onclick="checkMCQ(this, true)">Points counted and determined successfully ✨</button>
                     </div>
 
                     <button style="background:linear-gradient(135deg, #EC4899, #8B5CF6); color:white; border:none; padding:15px; border-radius:50px; font-weight:bold; font-size:1.1rem; cursor:pointer; margin-top:10px;" onclick="showWinningModal()">
-                        🏆 إعلان وتكريم المجموعة الفائزة بالحصة!
+                        🏆 Announce and Award Winning Group!
                     </button>
                 </div>
             </div>
@@ -880,7 +1074,7 @@
             <i class="fa-solid fa-crown fa-3x" id="modalIcon" style="color:var(--yellow-accent); margin-bottom:10px;"></i>
             <h2 id="modalTitle" style="color:var(--purple-main);"></h2>
             <div id="modalBody" style="margin:15px 0; font-size:1.05rem; line-height:1.6;"></div>
-            <button style="background:var(--purple-main); color:white; border:none; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="closeModal()">تم 👍</button>
+            <button style="background:var(--purple-main); color:white; border:none; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="closeModal()">Done 👍</button>
         </div>
     </div>
 
@@ -888,10 +1082,10 @@
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closePinModal()">X</button>
             <i class="fa-solid fa-lock fa-3x" style="color:var(--purple-main); margin-bottom:10px;"></i>
-            <h2 style="color:var(--purple-main);">أدخل الرقم السري للكشف</h2>
-            <p style="margin-top:5px; color:#64748B;">خاص بالمعلمة لفتح الإجابة</p>
+            <h2 style="color:var(--purple-main);">Enter Secret PIN to Reveal</h2>
+            <p style="margin-top:5px; color:#64748B;">Teacher access only</p>
             <input type="password" id="pinInput" class="pin-input-box" maxlength="4" placeholder="****">
-            <button style="background:var(--green-success); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; font-size:1.1rem;" onclick="verifyPin()">تأكيد وكشف الإجابة ✨</button>
+            <button style="background:var(--green-success); color:white; border:none; padding:12px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width:100%; font-size:1.1rem;" onclick="verifyPin()">Verify & Reveal ✨</button>
         </div>
     </div>
 
@@ -899,27 +1093,34 @@
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closePinErrorModal()">X</button>
             <i class="fa-solid fa-circle-xmark fa-3x" style="color:var(--red-danger); margin-bottom:10px;"></i>
-            <h2 style="color:var(--red-danger);">الرمز السري غير صحيح!</h2>
-            <p style="margin:15px 0; color:#64748B; font-size:1.05rem;">يرجى التأكد من الرقم السري وإعادة المحاولة مجدداً 🙏</p>
-            <button style="background:var(--red-danger); color:white; border:none; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="closePinErrorModal()">حسناً 👍</button>
+            <h2 style="color:var(--red-danger);">Incorrect PIN!</h2>
+            <p style="margin:15px 0; color:#64748B; font-size:1.05rem;">Please check the PIN and try again 🙏</p>
+            <button style="background:var(--red-danger); color:white; border:none; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="closePinErrorModal()">OK 👍</button>
         </div>
     </div>
 
-    <!-- Vanilla Standalone Script Engine (Guaranteed Execution & Safe Async Firebase) -->
+    <!-- Vanilla Standalone Script Engine & Persistent LocalStorage -->
     <script>
         const rawStudents = [
-            "تالا بنت إبراهيم المرحبي", "تالا عبدالله الشهراني", "جوانا بنت عبدالله الشهراني",
-            "جواهر بنت محمد الأكلبي", "حور ناصر الشهراني", "دانه بنت محمد العلياني",
-            "دينا متعب الشهراني", "رتيل بنت عامر الشهراني", "روان عايض", "صالحه علي الشهراني",
-            "فاطمه بنت ربيعان المعاوي", "لين بنت سعيد الشهراني", "نيهال عجب الشهراني",
-            "هياء بنت محمد المعاوي", "ود مسعود الشهراني", "وسن مبارك الشهراني"
+            "Tala Bint Ibrahim Al-Marhabi", "Tala Abdullah Al-Shahrani", "Jawana Bint Abdullah Al-Shahrani",
+            "Jawaher Bint Mohammed Al-Aklabi", "Hoor Nasser Al-Shahrani", "Danah Bint Mohammed Al-Alyan",
+            "Dina Miteb Al-Shahrani", "Ratel Bint Amer Al-Shahrani", "Rowan Ayed", "Salha Ali Al-Shahrani",
+            "Fatima Bint Rabean Al-Maawi", "Lien Bint Saeed Al-Shahrani", "Nihal Ajab Al-Shahrani",
+            "Haya Bint Mohammed Al-Maawi", "Wad Masoud Al-Shahrani", "Wasan Mubarak Al-Shahrani"
         ];
 
-        window.state = {
+        // Load saved state from localStorage if available, otherwise initialize default
+        const savedStateJson = localStorage.getItem('manalLessonState');
+        window.state = savedStateJson ? JSON.parse(savedStateJson) : {
             currentStage: 0,
             scores: [0, 0, 0],
             attendance: rawStudents.map(fullName => ({ fullName, present: true, group: null }))
         };
+
+        function saveStateToStorage() {
+            localStorage.setItem('manalLessonState', JSON.stringify(window.state));
+            if (window.syncDataToFirebase) window.syncDataToFirebase();
+        }
 
         // Render UI locally instantly
         window.renderUIFromState = function() {
@@ -932,7 +1133,7 @@
             });
 
             renderAttendanceList();
-            renderGroupsList();
+            renderSidebarGroupsList();
         };
 
         function renderAttendanceList() {
@@ -942,10 +1143,16 @@
             window.state.attendance.forEach((st, idx) => {
                 const item = document.createElement("div");
                 item.className = `student-item ${st.present ? '' : 'absent'}`;
-                item.draggable = st.present;
+                item.draggable = true;
                 item.ondragstart = (e) => e.dataTransfer.setData("text/plain", idx);
+                
+                const groupBadge = st.group ? `<span class="student-group-badge">${st.group}</span>` : '';
+
                 item.innerHTML = `
-                    <span>${st.fullName}</span>
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <span>${st.fullName}</span>
+                        ${groupBadge}
+                    </div>
                     <button style="border:none; background:none; cursor:pointer;" onclick="window.toggleAttendance(${idx})">
                         ${st.present ? '✅' : '❌'}
                     </button>
@@ -957,7 +1164,7 @@
         window.toggleAttendance = function(idx) {
             window.state.attendance[idx].present = !window.state.attendance[idx].present;
             window.renderUIFromState();
-            if (window.syncDataToFirebase) window.syncDataToFirebase();
+            saveStateToStorage();
             playAudioEffect('sad');
         };
 
@@ -968,31 +1175,39 @@
             if (idx !== undefined && window.state.attendance[idx]) {
                 window.state.attendance[idx].group = groupName;
                 window.renderUIFromState();
-                if (window.syncDataToFirebase) window.syncDataToFirebase();
+                saveStateToStorage();
                 playAudioEffect('happy');
             }
         };
 
-        function renderGroupsList() {
-            ["A", "B", "C"].forEach(g => {
-                const container = document.getElementById(`group${g}-list`);
+        window.resetGroupsDistribution = function() {
+            window.state.attendance.forEach(st => st.group = null);
+            window.renderUIFromState();
+            saveStateToStorage();
+            playAudioEffect('sad');
+        };
+
+        function renderSidebarGroupsList() {
+            const groupNamesMap = { "Butterflies": "sidebarGroupButterflies", "Princesses": "sidebarGroupPrincesses", "Queens": "sidebarGroupQueens" };
+            Object.keys(groupNamesMap).forEach(g => {
+                const container = document.getElementById(groupNamesMap[g]);
                 if (!container) return;
-                const members = window.state.attendance.filter(s => s.group === `Group ${g}`);
-                container.innerHTML = members.map(m => `<span style="display:inline-block; background:white; padding:4px 8px; border-radius:6px; margin:2px; font-size:0.8rem; font-weight:bold; border:1px solid #CBD5E1;">${m.fullName}</span>`).join("");
+                const members = window.state.attendance.filter(s => s.group === g);
+                container.innerHTML = members.map(m => `<span class="group-member-tag ${m.present ? '' : 'absent-tag'}">${m.fullName}</span>`).join("");
             });
         }
 
         window.updateScore = function(grpIdx, delta) {
             window.state.scores[grpIdx] = Math.max(0, window.state.scores[grpIdx] + delta);
             window.renderUIFromState();
-            if (window.syncDataToFirebase) window.syncDataToFirebase();
+            saveStateToStorage();
             playAudioEffect(delta > 0 ? 'happy' : 'sad');
         };
 
         window.switchStage = function(idx) {
             window.state.currentStage = idx;
             window.renderUIFromState();
-            if (window.syncDataToFirebase) window.syncDataToFirebase();
+            saveStateToStorage();
             playAudioEffect('happy');
         };
 
@@ -1039,7 +1254,7 @@
             document.getElementById("masterTimer").innerText = "40:00"; document.getElementById("masterPlayIcon").className = "fa-solid fa-play";
         };
 
-        const stageTimes = [240, 300, 600, 480, 360, 240, 180];
+        const stageTimes = [180, 300, 180, 600, 480, 360, 240, 240, 300, 180];
         let stageState = stageTimes.map(t => ({ left: t, interval: null }));
 
         window.toggleStageTimer = function(idx) {
@@ -1079,7 +1294,8 @@
 
         window.awardValueScore = function(grpIdx) {
             updateScore(grpIdx, 1);
-            openModal("💖 تفعيل القيمة السلوكية", `تم منح نقطة لـ Group ${["A","B","C"][grpIdx]} لتطبيق القيمة والمهارة بنجاح! 👏✨`);
+            const names = ["Butterflies 🦋", "Princesses 👑", "Queens 💎"];
+            openModal("💖 Value Activation", `Awarded 1 point to ${names[grpIdx]} for successfully applying the core value! 👏✨`);
         };
 
         // Puzzle Game Engine
@@ -1100,12 +1316,12 @@
                 if (selectedPuzzleTile.matchKey === matchKey && selectedPuzzleTile.id !== id) {
                     selectedPuzzleTile.el.className = "puzzle-tile correct-match";
                     el.className = "puzzle-tile correct-match";
-                    openModal("👏 تطابق صحيح!", `أحسنتن! تم ربط آلة <b>${matchKey.toUpperCase()}</b> بنجاح! ✨`);
+                    openModal("👏 Correct Match!", `Great job! Successfully matched <b>${matchKey.toUpperCase()}</b>! ✨`);
                     playAudioEffect('happy');
                 } else {
                     selectedPuzzleTile.el.className = "puzzle-tile wrong-match";
                     el.className = "puzzle-tile wrong-match";
-                    openModal("❌ تطابق غير صحيح", "هاتان القطعتان غير متطابقتين، حاولن مرة أخرى! 💪");
+                    openModal("❌ Incorrect Match", "These two pieces do not match, try again! 💪");
                     playAudioEffect('sad');
                 }
                 selectedPuzzleTile = null;
@@ -1148,7 +1364,7 @@
         window.checkMCQ = function(btn, isCorrect) {
             btn.className = `mcq-btn ${isCorrect ? 'correct' : 'wrong'}`;
             if (isCorrect) {
-                openModal("✨ إجابة صحيحة!", "رائع جداً! تم الإجابة بشكل صحيح وتحقيق الهدف ✨");
+                openModal("✨ Correct Answer!", "Fantastic! Answered correctly and achieved the goal ✨");
             }
             playAudioEffect(isCorrect ? 'happy' : 'sad');
         };
@@ -1157,7 +1373,7 @@
         window.pickRandomStudent = function() {
             const presents = window.state.attendance.filter(s => s.present);
             if (presents.length === 0) {
-                openModal("⚠️ تنبيه الحضور", "جميع الطالبات غائبات!");
+                openModal("⚠️ Attendance Alert", "All students are absent!");
                 return;
             }
             if (isPicking) return;
@@ -1177,7 +1393,28 @@
                     const finalPick = presents[Math.floor(Math.random() * presents.length)];
                     display.innerText = `🎯 ${finalPick.fullName}`;
                     isPicking = false;
-                    openModal("🎲 الطالبة المتميزة المختارة:", `تفضلي بالمشاركة يا المبدعة: <b>${finalPick.fullName}</b> ✨`);
+                    openModal("🎲 Selected Star Student:", `Please participate, star student: <b>${finalPick.fullName}</b> ✨`);
+                    playAudioEffect('happy');
+                }
+            }, 100);
+        };
+
+        window.pickRandomGroup = function() {
+            const groups = ["Butterflies 🦋", "Princesses 👑", "Queens 💎"];
+            const display = document.getElementById("groupPickerDisplay");
+            let counter = 0;
+            
+            const interval = setInterval(() => {
+                const tempPick = groups[Math.floor(Math.random() * groups.length)];
+                display.innerText = `⏳ ${tempPick}`;
+                playAudioEffect('happy');
+                counter++;
+
+                if (counter > 12) {
+                    clearInterval(interval);
+                    const finalPick = groups[Math.floor(Math.random() * groups.length)];
+                    display.innerText = `🌟 ${finalPick}`;
+                    openModal("🏆 Selected Group:", `The lucky group chosen is: <b>${finalPick}</b> ✨`);
                     playAudioEffect('happy');
                 }
             }, 100);
@@ -1185,12 +1422,28 @@
 
         window.showWinningModal = function() {
             const max = Math.max(...window.state.scores);
-            const winnerIdx = window.state.scores.indexOf(max);
-            const groupNames = ["Group A (Stars ⭐)", "Group B (Roses 🌸)", "Group C (Butterflies 🦋)"];
-            const winners = window.state.attendance.filter(s => s.group === `Group ${["A","B","C"][winnerIdx]}`).map(s => s.fullName);
+            if (max === 0) {
+                openModal("🏆 Points Alert", "No points have been recorded for the groups yet! Please add points before announcing winners ⭐");
+                playAudioEffect('sad');
+                return;
+            }
+
+            const groupNames = ["Butterflies 🦋", "Princesses 👑", "Queens 💎"];
+            const groupKeys = ["Butterflies", "Princesses", "Queens"];
             
-            const membersText = winners.length > 0 ? winners.join("<br>") : "جميع طالبات المجموعة";
-            openModal("🏆 إعلان المجموعة الفائزة", `مبروك لفوز <b>${groupNames[winnerIdx]}</b> بـ ${max} نقطة!<br><br><b>طالبات المجموعة الفائزة:</b><br>${membersText} 👏🎉`);
+            let winnersHtml = "";
+            window.state.scores.forEach((sc, idx) => {
+                if (sc === max) {
+                    const winners = window.state.attendance.filter(s => s.group === groupKeys[idx]).map(s => s.fullName);
+                    const membersText = winners.length > 0 ? winners.join("<br>") : "No students assigned to this group yet";
+                    winnersHtml += `<div style="background:#F3E8FF; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid #C084FC;">
+                        <h3 style="color:#6B21A8; margin-bottom:6px;">🎉 ${groupNames[idx]} (${max} Points)</h3>
+                        <b>Members:</b><br>${membersText}
+                    </div>`;
+                }
+            });
+
+            openModal("🏆 Winning Groups Announcement", `<p style="margin-bottom:10px; font-weight:bold;">Congratulations to the winning group(s)! 🌟</p>${winnersHtml}`);
             playAudioEffect('happy');
         };
 
