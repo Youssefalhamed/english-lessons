@@ -561,6 +561,43 @@
             margin: 15px 0;
             outline: none;
         }
+
+        /* Footer Styling - Dark Theme */
+        footer.page-footer {
+            text-align: center;
+            padding: 22px;
+            background: #0F172A;
+            border-top: 1px solid #1E293B;
+            color: #FFFFFF;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: auto;
+            position: relative;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -1066,6 +1103,18 @@
 
         </main>
     </div>
+
+    <!-- Footer - Dark Background with White Text -->
+    <footer class="page-footer">
+        Designed & Developed by<br>
+        Yousef Al-Hamed<br>
+        All Rights Reserved 2026 ©
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/966565588869" class="whatsapp-float" target="_blank" title="Contact via WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
     <!-- Modals Popups -->
     <div class="modal-overlay" id="modalOverlay">
